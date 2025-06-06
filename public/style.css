@@ -60,6 +60,16 @@ header{
   gap: 10rem;
 }
 
+button{
+  padding: 2rem;
+  border-radius: 2rem;
+  background-color: var(--color-accent-light); 
+  color: var(--color-background-darkest); 
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+}
+
 /* .main-chat{
     padding: 1rem;
     margin: 2rem;

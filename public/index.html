@@ -5,52 +5,39 @@
     <meta charset="UTF-8" />
     <title>LeibROOMS Lite</title>
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-      <!-- Estilos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Estilos -->
     <link rel="stylesheet" href="./style.css" />
-
   </head>
   <body>
     <header>
       <div>
-        <img src="./logo.svg" alt="LeibROOMS Lite" height="60">
+        <img src="./logo.svg" alt="LeibROOMS Lite" height="70" />
       </div>
       <div class="usuario-info">
         <!-- Modal Alias Usuario -->
-      <div id="modal" class="modal">
-        <div class="modal-content">
-          <h3>Ingresá tu alias</h3>
-          <input type="text" id="alias-input" placeholder="Ej: Nico1337" />
-          <p id="error-msg" class="error-msg">Ingrese un alias</p>
-          <button id="aceptar-btn">Aceptar</button>
+        <div id="modal" class="modal">
+          <div class="modal-content">
+            <h3>Ingresá tu alias</h3>
+            <input type="text" id="alias-input" placeholder="Ej: Nico1337" />
+            <p id="error-msg" class="error-msg">Ingrese un alias</p>
+            <button id="aceptar-btn">Aceptar</button>
+          </div>
         </div>
-      </div>
       </div>
     </header>
     <main class="main-content">
-      <h2 class="saludo">Bienvenido</h2>
+      <h2 class="saludo">Bienvenido/a</h2>
       <div class="buttons-container">
-        <button>Crear Sala</button>
-        <button>Unirse a Sala</button>
+        <button id="unirse-sala-gral">Unirse a Sala General</button>
+        <button id="crear-sala">Crear Sala</button>
+        <button id="unirse-sala-priv">Unirse a Sala Privada</button>
       </div>
-      <!-- <div class="main-chat">
-        <div>
-          <div class="mensajes">
-          
-          </div>
-          <div class="participantes">
-          
-          </div>
-        </div>
-        <div>
-          <div class="escribir">
-  
-          </div>
-          <button class="btn-enviar">Enviar</button>
-        </div>
-      </div> -->
     </main>
     <footer>
       <p>Alejo, Sasha y Nico</p>
