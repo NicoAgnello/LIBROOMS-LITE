@@ -15,10 +15,21 @@ app.use(express.static(path.join(__dirname, '../public')));
 io.on('connection', (socket) => {
   console.log('Nuevo usuario conectado:', socket.id);
 
+socket.on('mensajeChat', (mensaje) => {
+  console.log('Mensaje recibido:', mensaje);
+
+  // reenviar el mensaje a todos los clientes conectados
+  //io.emit('mensajeChat', mensaje);
+});
+
+
+
+
   socket.on('disconnect', () => {
     console.log('Usuario desconectado:', socket.id);
   });
 });
+
 
 
 

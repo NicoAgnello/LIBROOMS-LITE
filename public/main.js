@@ -9,7 +9,7 @@ socket.on('connect', () => {
 const enviarMensaje = () => {
   const inputMensaje = document.getElementById("inputMensaje")
   let mensaje = inputMensaje.value
-  socket.emit("Mensaje chat", mensaje)
+  socket.emit("mensajeChat", mensaje)
   inputMensaje.value = ""
 }
 
