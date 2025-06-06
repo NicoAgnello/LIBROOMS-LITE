@@ -1,8 +1,5 @@
 // public/main.js
-const socket = io();
-
-console.log('Conectado con Socket.IO');
-console.log(socket)
+// const socket = io();
 
 socket.on('connect', () => {
   console.log('Cliente conectado con id:', socket.id);
@@ -20,8 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   if (aliasGuardado) {
     modal.style.display = 'none';
-    console.log('Alias ya guardado:', aliasGuardado);
-    bienvenido.textContent = `Bienvenido ${aliasGuardado}`;
+    bienvenido.textContent = `Bienvenido/a ${aliasGuardado}`;
   }
 
   btnAceptar.addEventListener('click', () => {
@@ -29,9 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (alias) {
       localStorage.setItem('alias', alias);
       modal.style.display = 'none';
-      console.log('Alias ingresado:', alias);
-      bienvenido.textContent = `Bienvenido ${alias}`;
-      
+      bienvenido.textContent = `Bienvenido/a ${alias}`;
     } else {
       errorMsg.style.display = 'block';
     }
