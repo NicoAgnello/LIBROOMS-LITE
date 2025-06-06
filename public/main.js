@@ -1,8 +1,12 @@
 // public/main.js
-// const socket = io();
+const socket = io();
 
-// console.log('Conectado con Socket.IO');
-// console.log(socket)
+console.log('Conectado con Socket.IO');
+console.log(socket)
+
+socket.on('connect', () => {
+  console.log('Cliente conectado con id:', socket.id);
+});
 
 // Funcion Modal
 window.addEventListener('DOMContentLoaded', () => {
