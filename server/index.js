@@ -28,14 +28,10 @@ const os = require('os');
 
 // Función para obtener la IP local
 function getLocalIPv4() {
-  const interfaces = os.networkInterfaces();
-  for (const name of Object.keys(interfaces)) {
-    for (const iface of interfaces[name]) {
-      if (
-        iface.family === 'IPv4' &&
-        !iface.internal &&
-        name.toLowerCase().includes('wi-fi') // <-- preferís el adaptador Wi-Fi
-      ) {
+  const interfaces = require('os').networkInterfaces();
+  for (const ifaceList of Object.values(interfaces)) {
+    for (const iface of ifaceList) {
+      if (iface.family === 'IPv4' && !iface.internal) {
         return iface.address;
       }
     }
