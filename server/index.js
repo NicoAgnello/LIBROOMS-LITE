@@ -20,8 +20,32 @@ io.on('connection', (socket) => {
   });
 });
 
+
+
 // Levantar el servidor
 const PORT = 3000;
-server.listen(PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+const os = require('os');
+
+// Función para obtener la IP local
+function getLocalIPv4() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (
+        iface.family === 'IPv4' &&
+        !iface.internal &&
+        name.toLowerCase().includes('wi-fi') // <-- preferís el adaptador Wi-Fi
+      ) {
+        return iface.address;
+      }
+    }
+  }
+  return 'localhost';
+}
+
+const ip = getLocalIPv4();
+
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`Servidor escuchando en http://${ip}:${PORT}`);
 });
+
