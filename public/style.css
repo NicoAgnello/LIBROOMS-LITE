@@ -20,10 +20,11 @@ html, body {
 }
 
 body{
-     display: flex;
+    display: flex;
     flex-direction: column;
     min-height: 100vh; /* 100% del alto de la ventana */
 }
+
 /* Header */
 header{
     padding: 1rem;
@@ -68,6 +69,16 @@ button{
   font-size: 1rem;
   font-weight: 500;
   border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #9bb8c4;
+}
+
+.none{
+  display: none;
 }
 
 /* .main-chat{
@@ -78,7 +89,6 @@ button{
 } */
 
 /* Footer */
-
 footer{
     background-color: var(--color-accent);
     padding: 2rem 0;    
@@ -87,7 +97,6 @@ footer{
     justify-content: center; /* horizontal */
     align-items: center;     /* vertical */
 }
-
 
 /* Modal */
 .modal {
@@ -101,6 +110,10 @@ footer{
   align-items: center;
   justify-content: center;
   z-index: 1000;
+}
+
+.modal.none {
+  display: none;
 }
 
 .modal-content {
@@ -139,6 +152,7 @@ footer{
 .modal-content button:hover {
   background-color: #356781;
 }
+
 .error-msg {
   color: red;
   font-size: 0.9rem;

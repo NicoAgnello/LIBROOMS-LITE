@@ -1,4 +1,3 @@
-<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -19,31 +18,34 @@
       <div>
         <img src="./logo.svg" alt="LeibROOMS Lite" height="70" />
       </div>
-      <div class="usuario-info">
-        <!-- Modal Alias Usuario -->
-        <div id="modal" class="modal">
-          <div class="modal-content">
-            <h3>Ingresá tu alias</h3>
-            <input type="text" id="alias-input" placeholder="Ej: Nico1337" />
-            <p id="error-msg" class="error-msg">Ingrese un alias</p>
-            <button id="aceptar-btn">Aceptar</button>
-          </div>
-        </div>
-      </div>
+      <div class="usuario-info"></div>
     </header>
+
     <main class="main-content">
       <h2 class="saludo">Bienvenido/a</h2>
       <div class="buttons-container">
         <button id="unirse-sala-gral">Unirse a Sala General</button>
-        <button onclick="crearSala()" id="crear-sala">Crear Sala</button>
+        <button id="crear-sala">Crear Sala</button>
         <button id="unirse-sala-priv">Unirse a Sala Privada</button>
       </div>
       <input type="text" id="inputMensaje" />
       <button onclick="enviarMensaje()" id="botonEnviarMensaje">enviar</button>
     </main>
+
+    <!-- Modal Reutilizable -->
+    <div id="modal" class="modal none">
+      <div class="modal-content">
+        <h3 id="modal-title">Ingresá tu alias</h3>
+        <input type="text" id="modal-input" placeholder="Ej: Nico1337" />
+        <p id="modal-error" class="error-msg">Ingrese un alias</p>
+        <button id="modal-accept" type="button">Aceptar</button>
+      </div>
+    </div>
+
     <footer>
       <p>Alejo, Sasha y Nico</p>
     </footer>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="./main.js"></script>
   </body>
