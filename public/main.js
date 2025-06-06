@@ -7,9 +7,10 @@ socket.on('connect', () => {
 
 
 const enviarMensaje = () => {
-  const inputMensaje = document.getElementById("inputMensaje").value
-  socket.emit("Mensaje chat", inputMensaje)
-  inputMensaje = ""
+  const inputMensaje = document.getElementById("inputMensaje")
+  let mensaje = inputMensaje.value
+  socket.emit("Mensaje chat", mensaje)
+  inputMensaje.value = ""
 }
 
 const crearSala = () => {
