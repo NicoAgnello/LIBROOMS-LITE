@@ -1,9 +1,4 @@
 /* Global */
-*{
-    padding: 0;
-    margin: 0;
-    font-family: var(--font-primary);
-}
 :root {
   --color-background-darkest: #090937; /* color1 */
   --color-background-dark:    #122050; /* color2 */
@@ -11,6 +6,12 @@
   --color-accent:             #467e99; /* color4 */
   --color-accent-light:       #acc4ce; /* color5 */
   --font-primary: 'Rubik', sans-serif;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-primary);
 }
 
 html, body {
