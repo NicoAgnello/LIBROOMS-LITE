@@ -35,9 +35,11 @@
       <h2 class="saludo">Bienvenido/a</h2>
       <div class="buttons-container">
         <button id="unirse-sala-gral">Unirse a Sala General</button>
-        <button id="crear-sala">Crear Sala</button>
+        <button onclick="crearSala()" id="crear-sala">Crear Sala</button>
         <button id="unirse-sala-priv">Unirse a Sala Privada</button>
       </div>
+      <input type="text" id="inputMensaje" />
+      <button onclick="enviarMensaje()" id="botonEnviarMensaje">enviar</button>
     </main>
     <footer>
       <p>Alejo, Sasha y Nico</p>

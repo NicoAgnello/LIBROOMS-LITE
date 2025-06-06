@@ -5,6 +5,17 @@ socket.on('connect', () => {
   console.log('Cliente conectado con id:', socket.id);
 });
 
+
+const enviarMensaje = () => {
+  const inputMensaje = document.getElementById("inputMensaje").value
+  socket.emit("Mensaje chat", inputMensaje)
+  inputMensaje = ""
+}
+
+const crearSala = () => {
+  const containerButtons = document.querySelector(".buttons-container")
+}
+
 // Funcion Modal
 window.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('modal');
