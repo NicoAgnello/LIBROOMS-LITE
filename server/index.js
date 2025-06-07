@@ -14,12 +14,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Evento de conexión con Socket.IO
 io.on('connection', (socket) => {
   console.log('Nuevo usuario conectado:', socket.id);
-
+  
+  //Recibir mensaje de usuario
 socket.on('mensajeChat', (mensaje) => {
   console.log('Mensaje recibido:', mensaje);
-
   // reenviar el mensaje a todos los clientes conectados
-  //io.emit('mensajeChat', mensaje);
+  io.emit('mensajeChat', mensaje);
 });
 
 
@@ -37,17 +37,28 @@ socket.on('mensajeChat', (mensaje) => {
 const PORT = 3000;
 const os = require('os');
 
-// Función para obtener la IP local
+
 function getLocalIPv4() {
-  const interfaces = require('os').networkInterfaces();
-  for (const ifaceList of Object.values(interfaces)) {
-    for (const iface of ifaceList) {
+  const interfaces = os.networkInterfaces();
+  let fallback = null;
+
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
       if (iface.family === 'IPv4' && !iface.internal) {
-        return iface.address;
+        // Preferir interfaces de red Wi-Fi
+        if (name.toLowerCase().includes('wi') || name.toLowerCase().includes('wlan') || name.toLowerCase().includes('en0')) {
+          return iface.address;
+        }
+
+        // Guardar como alternativa en caso de no encontrar Wi-Fi
+        if (!fallback) {
+          fallback = iface.address;
+        }
       }
     }
   }
-  return 'localhost';
+
+  return fallback || 'localhost';
 }
 
 const ip = getLocalIPv4();

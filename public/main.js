@@ -4,6 +4,23 @@ socket.on('connect', () => {
   console.log('Cliente conectado con id:', socket.id);
 });
 
+// Función para enviar mensaje
+const enviarMensaje = () => {
+  const inputMensaje = document.getElementById("inputMensaje")
+  let mensaje = inputMensaje.value
+  socket.emit("mensajeChat", mensaje)
+  inputMensaje.value = ""
+}
+
+//funcion para recibir mensajes del servidor
+const chatLog = document.getElementById('chat-log');
+socket.on('mensajeChat', (mensaje) => {
+  const li = document.createElement('li');
+  li.textContent = mensaje;
+  chatLog.appendChild(li);
+});
+
+
 // Clase para manejar el modal reutilizable
 class ModalManager {
   constructor() {
