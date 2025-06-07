@@ -14,12 +14,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Evento de conexión con Socket.IO
 io.on('connection', (socket) => {
   console.log('Nuevo usuario conectado:', socket.id);
-
+  
+  //Recibir mensaje de usuario
 socket.on('mensajeChat', (mensaje) => {
   console.log('Mensaje recibido:', mensaje);
-
   // reenviar el mensaje a todos los clientes conectados
-  //io.emit('mensajeChat', mensaje);
+  io.emit('mensajeChat', mensaje);
 });
 
 

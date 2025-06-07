@@ -12,6 +12,14 @@ const enviarMensaje = () => {
   inputMensaje.value = ""
 }
 
+//funcion para recibir mensajes del servidor
+const chatLog = document.getElementById('chat-log');
+socket.on('mensajeChat', (mensaje) => {
+  const li = document.createElement('li');
+  li.textContent = mensaje;
+  chatLog.appendChild(li);
+});
+
 
 // Clase para manejar el modal reutilizable
 class ModalManager {

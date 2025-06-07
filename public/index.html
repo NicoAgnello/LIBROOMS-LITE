@@ -28,8 +28,11 @@
         <button id="crear-sala">Crear Sala</button>
         <button id="unirse-sala-priv">Unirse a Sala Privada</button>
       </div>
-      <input type="text" id="inputMensaje" />
-      <button onclick="enviarMensaje()" id="botonEnviarMensaje">enviar</button>
+      <div><!-- DIV DE COMUNICACION DE SALA-->
+        <ul id="chat-log"> Mensajes</ul> <!-- ATNECION!!: UL donde caen los mensajes enviados en forma de li-->
+        <input type="text" id="inputMensaje" />
+        <button onclick="enviarMensaje()" id="botonEnviarMensaje">enviar</button>
+      </div>
     </main>
 
     <!-- Modal Reutilizable -->
