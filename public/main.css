@@ -61,7 +61,7 @@ header{
   gap: 10rem;
 }
 
-button{
+a, button{
   padding: 2rem;
   border-radius: 2rem;
   background-color: var(--color-accent-light); 
@@ -73,12 +73,22 @@ button{
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+a, button:hover {
   background-color: #9bb8c4;
+}
+
+a{
+  text-decoration: none;
 }
 
 .none{
   display: none;
+}
+
+.check-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 /* .main-chat{

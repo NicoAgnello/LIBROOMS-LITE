@@ -11,25 +11,22 @@
       rel="stylesheet"
     />
     <!-- Estilos -->
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./main.css" />
   </head>
   <body>
     <header>
       <div>
         <img src="./logo.svg" alt="LeibROOMS Lite" height="70" />
       </div>
-      <div class="usuario-info"></div>
     </header>
 
     <main class="main-content">
       <h2 class="saludo">Bienvenido/a</h2>
       <div class="buttons-container">
-        <button id="unirse-sala-gral">Unirse a Sala General</button>
-        <button id="crear-sala">Crear Sala</button>
+        <a href="./salaGeneral.html" id="unirse-sala-gral">Unirse a Sala General</a>
+        <a onclick="crearSala()" id="crear-sala">Crear Sala</a>
         <button id="unirse-sala-priv">Unirse a Sala Privada</button>
       </div>
-      <input type="text" id="inputMensaje" />
-      <button onclick="enviarMensaje()" id="botonEnviarMensaje">enviar</button>
     </main>
 
     <!-- Modal Reutilizable -->
@@ -37,6 +34,7 @@
       <div class="modal-content">
         <h3 id="modal-title">Ingresá tu alias</h3>
         <input type="text" id="modal-input" placeholder="Ej: Nico1337" />
+        <div id="modal-extra"></div> <!-- 🔥 esta línea nueva -->
         <p id="modal-error" class="error-msg">Ingrese un alias</p>
         <button id="modal-accept" type="button">Aceptar</button>
       </div>

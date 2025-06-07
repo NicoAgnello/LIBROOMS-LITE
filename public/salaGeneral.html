@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LeibROOMS Lite</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Estilos -->
+    <link rel="stylesheet" href="./mainSala.css" />
+  </head>
+  <body>
+    <header>
+      <div>
+        <img src="./logo.svg" alt="LeibROOMS Lite" height="70" />
+      </div>
+    </header>
+    <main class="main-content">
+        <div class="container-chat">
+            <ul>
+
+            </ul>
+            <div class="usuarios-conectados">
+                <ul>
+                    <li>Alejo</li>
+                    <li>Nico</li>
+                    <li>Sasha</li>
+                </ul>
+            </div>
+        </div>
+        <div class="input-container">
+            <input type="text" id="inputMensaje" />
+            <button onclick="enviarMensaje()" id="botonEnviarMensaje">Enviar</button>
+        </div> 
+    </main>
+    <footer>
+      <p>Alejo, Sasha y Nico</p>
+    </footer>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./mainSala.js"></script>
+  </body>
+</html>
