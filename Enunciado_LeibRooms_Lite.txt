@@ -1,18 +1,25 @@
 ﻿ENUNCIADO TRABAJO PRÁCTICO – LeibROOMS LITE
+
+
 Asignatura: Programación II
+
 Tema: Aplicación en Node.js con Express y Socket.IO
+
 Ámbito: Red LAN del aula
 Duración sugerida: 2 semanas
 Modalidad: Grupal (2–3 integrantes)
 1. Objetivo
-Construir una aplicación web que demuestre comunicación en tiempo real usando WebSocket, sin capas de seguridad ni autenticación compleja. El foco está en comprender la mecánica servidor–cliente sobre Node.js y Express dentro de un entorno controlado (la LAN del curso).
+Construir una aplicación web que demuestre comunicación en tiempo real usando WebSocket, sin capas de seguridad ni autenticación compleja.
+ El foco está en comprender la mecánica servidor–cliente sobre Node.js y Express dentro de un entorno controlado (la LAN del curso).
 2. Producto mínimo
 Desarrollen un chat multicanal (“LeibRooms Lite”) con las siguientes características indispensables:
 • Alias de usuario: Al abrir la app, el usuario ingresa un alias (texto libre). No hay contraseñas ni persistencia.
 • Salas de chat: Cualquier usuario puede crear una sala con un nombre y unirse.
 • Mensajes en tiempo real: Envío y recepción instantánea mediante Socket.IO. Cada mensaje muestra alias y hora.
 • Lista de participantes: Visualizar en vivo quiénes están conectados a la sala.
-Extras optativos (+10 %): estado “escribiendo…”, emojis, contador de mensajes o la opción de definir salas públicas/privadas (las privadas solicitan un código de acceso simple).
+
+Extras optativos (+10 %): estado “escribiendo…”, emojis, contador de mensajes o la opción de definir salas públicas/privadas
+ (las privadas solicitan un código de acceso simple).
 3. Requisitos técnicos
 1. Node.js.
 2. Express para rutas básicas y servir archivos estáticos.
