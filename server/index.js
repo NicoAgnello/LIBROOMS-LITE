@@ -57,6 +57,7 @@ let hora = getHora()
 
 //Obtener hora
 function getHora(){
+  const ahora = ''
   const horas = ahora.getHours().toString().padStart(2, '0');
   const minutos = ahora.getMinutes().toString().padStart(2, '0');
   const horaActual = `${horas}:${minutos}`;
