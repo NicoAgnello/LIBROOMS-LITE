@@ -214,3 +214,9 @@ window.addEventListener('DOMContentLoaded', () => {
   // Event listener para crear sala
   document.getElementById('crear-sala').addEventListener('click', crearSala);
 });
+const setLocaleStorage = (nombre, valor) => {
+  localStorage.setItem(String(nombre), valor);
+}
+const getLocaleStorage = (nombre) => {
+  return localStorage.getItem(nombre)
+}

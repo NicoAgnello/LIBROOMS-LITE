@@ -3,8 +3,13 @@ const socket = io();
 // Función para enviar mensaje
 const enviarMensaje = () => {
   const inputMensaje = document.getElementById("inputMensaje")
-  let mensaje = inputMensaje.value
-  if(mensaje != ""){
+  let mensajeValue = inputMensaje.value
+  let alias = getLocaleStorage("alias")
+  mensaje = {
+    value: mensajeValue,
+    alias: alias
+  }
+  if(mensaje.value != ""){
       socket.emit("mensajeChat", mensaje)
   }
   inputMensaje.value = ""
