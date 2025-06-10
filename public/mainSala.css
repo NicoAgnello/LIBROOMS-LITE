@@ -50,8 +50,14 @@ header{
   margin: 2rem;
   border-radius: 2rem;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
+
+#chat-log li{
+  list-style: none;
+
+}
+
 .usuarios-conectados{
   display: flex;
 }
