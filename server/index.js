@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const salas = new Set(); // Lista de nombres de salas
+const salas = new Set(); // Lista de nombres de salas creadas
 
 // Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../public')));
@@ -15,9 +15,19 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Evento de conexión con Socket.IO
 io.on('connection', (socket) => {
     console.log('Nuevo usuario conectado:', socket.id);
-
+/*
+  mensaje = {
+      value: mensajeValue,
+      alias: alias
+  }
+*/
+  
+    
     //Recibir mensaje de usuario
   socket.on('mensajeChat', (mensaje) => {
+
+let hora = getHora()
+  mensaje.hora = horaActual;
   console.log('Mensaje recibido:', mensaje);
   // reenviar el mensaje a todos los clientes conectados
 
@@ -45,7 +55,13 @@ io.on('connection', (socket) => {
   });
 });
 
-
+//Obtener hora
+function getHora(){
+  const horas = ahora.getHours().toString().padStart(2, '0');
+  const minutos = ahora.getMinutes().toString().padStart(2, '0');
+  const horaActual = `${horas}:${minutos}`;
+  return horaActual
+}
 
 
 // Levantar el servidor
