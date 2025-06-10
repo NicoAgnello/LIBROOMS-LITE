@@ -29,22 +29,36 @@ class ModalManager {
     this.input = document.getElementById('modal-input');
     this.error = document.getElementById('modal-error');
     this.acceptBtn = document.getElementById('modal-accept');
-    this.extraContent = document.getElementById('modal-extra');
     this.currentCallback = null;
     this.currentValidator = null;
-    this.isMandatory = false;
-
+    
+    // Debug: verificar que todos los elementos existan
+    console.log('Modal elements:', {
+      modal: this.modal,
+      title: this.title,
+      input: this.input,
+      error: this.error,
+      acceptBtn: this.acceptBtn
+    });
+    
     this.init();
   }
 
   init() {
-    if (!this.acceptBtn) return;
+    // Verificar que el botón existe antes de agregar el event listener
+    if (!this.acceptBtn) {
+      console.error('No se encontró el botón aceptar');
+      return;
+    }
 
+    // Event listener para el botón aceptar
     this.acceptBtn.addEventListener('click', (e) => {
+      console.log('Click en botón aceptar'); // Debug
       e.preventDefault();
       this.handleAccept();
     });
 
+    // Event listener para input (quitar error al escribir)
     if (this.input) {
       this.input.addEventListener('input', () => {
         if (this.input.value.trim() !== '') {
@@ -52,17 +66,21 @@ class ModalManager {
         }
       });
 
+      // Event listener para Enter en el input
       this.input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
+          console.log('Enter presionado'); // Debug
           e.preventDefault();
           this.handleAccept();
         }
       });
     }
 
+    // Cerrar modal al hacer click fuera
     if (this.modal) {
       this.modal.addEventListener('click', (e) => {
-        if (e.target === this.modal && !this.isMandatory) {
+        if (e.target === this.modal) {
+          console.log('Click fuera del modal'); // Debug
           this.close();
         }
       });
@@ -72,15 +90,12 @@ class ModalManager {
   show(options) {
     const {
       title = 'Título',
-      placeholder = '',
+      placeholder = 'Ingresa el valor',
       errorMessage = 'Campo requerido',
       validator = (value) => value.trim() !== '',
-      onAccept = () => {},
-      isMandatory = false,
-      extraHTML = '' // permite inyectar HTML
+      onAccept = () => {}
     } = options;
 
-    this.isMandatory = isMandatory;
     this.title.textContent = title;
     this.input.placeholder = placeholder;
     this.error.textContent = errorMessage;
@@ -91,42 +106,33 @@ class ModalManager {
     this.hideError();
     this.modal.classList.remove('none');
     this.input.focus();
-
-    // Contenido adicional (radios, contraseña, etc.)
-    if (this.extraContent) {
-      this.extraContent.innerHTML = extraHTML;
-    }
   }
 
   close() {
+    console.log('Cerrando modal'); // Debug
     if (this.modal) {
       this.modal.classList.add('none');
+      console.log('Clase "none" agregada'); // Debug
     }
     this.currentCallback = null;
     this.currentValidator = null;
-    this.isMandatory = false;
-    if (this.extraContent) this.extraContent.innerHTML = '';
   }
 
   handleAccept() {
     const value = this.input.value.trim();
-    const isValid = this.currentValidator ? this.currentValidator(value) : true;
-
-    if (isValid) {
+    console.log('Valor ingresado:', value); // Debug
+    console.log('Validator:', this.currentValidator); // Debug
+    
+    if (this.currentValidator && this.currentValidator(value)) {
+      console.log('Validación exitosa'); // Debug
       if (this.currentCallback) {
-        const extraData = this.getExtraData();
-        this.currentCallback(value, extraData);
+        this.currentCallback(value);
       }
       this.close();
     } else {
+      console.log('Validación fallida'); // Debug
       this.showError();
     }
-  }
-
-  getExtraData() {
-    const tipo = document.querySelector('input[name="tipo-sala"]:checked')?.value || 'publica';
-    const pass = document.getElementById('input-password')?.value?.trim() || '';
-    return { tipoSala: tipo, password: pass };
   }
 
   showError() {
@@ -141,94 +147,56 @@ class ModalManager {
 // Inicializar el modal manager
 const modalManager = new ModalManager();
 
-// Crear sala
+// Función para crear sala
 const crearSala = () => {
+  console.log("Crear sala");
   const containerButtons = document.querySelector(".buttons-container");
-
+  
   modalManager.show({
     title: 'Crear Nueva Sala',
     placeholder: 'Ej: Sala de Amigos',
-    errorMessage: 'Ingrese un nombre y/o contraseña válida',
-    validator: () => {
-      const nombreSala = document.getElementById('modal-input')?.value?.trim();
-      const tipo = document.querySelector('input[name="tipo-sala"]:checked')?.value;
-      const password = document.getElementById('input-password')?.value?.trim() || '';
-      if (!nombreSala) return false;
-      if (tipo === 'privada' && password === '') return false;
-      return true;
-    },
-    extraHTML: `
-      <div class="check-container" style="margin-top: 10px;">
-        <label><input type="radio" name="tipo-sala" value="publica" checked /> Pública</label>
-        <label style="margin-left: 10px;"><input type="radio" name="tipo-sala" value="privada" /> Privada</label>
-      </div>
-      <div id="password-container" style="margin-top: 10px; display: none;">
-        <input type="password" id="input-password" placeholder="Contraseña" />
-      </div>
-    `,
-    onAccept: (nombreSala, extra) => {
-      const alias = getLocaleStorage('alias');
-      const datosSala = {
-        nombreSala,
-        tipoSala: extra.tipoSala,
-        contraseña: extra.password,
-        alias
-      };
-      console.log('Enviando datos de sala:', datosSala);
-      socket.emit('crear-sala', datosSala);
-
+    errorMessage: 'Ingrese un nombre para la sala',
+    validator: (value) => value.length >= 3,
+    onAccept: (nombreSala) => {
+      console.log('Sala creada:', nombreSala);
+      // Aquí puedes emitir el evento al servidor
+      socket.emit('crear-sala', nombreSala);
+      // Ocultar botones y mostrar mensaje de éxito
       containerButtons.style.display = 'none';
       document.querySelector('.saludo').textContent = `Sala "${nombreSala}" creada`;
     }
   });
-
-  // 🚨 Importante: agregar listener DESPUÉS de que se inyecta el contenido extra
-  setTimeout(() => {
-    const radios = document.querySelectorAll('input[name="tipo-sala"]');
-    radios.forEach(radio => {
-      radio.addEventListener('change', () => {
-        const tipoSeleccionado = document.querySelector('input[name="tipo-sala"]:checked')?.value;
-        const passContainer = document.getElementById('password-container');
-        if (passContainer) {
-          passContainer.style.display = tipoSeleccionado === 'privada' ? 'block' : 'none';
-        }
-      });
-    });
-  }, 50); // le damos un mini delay para asegurarnos que ya se haya renderizado
 };
 
-
-// Pedir alias si no está
+// Función Modal - Inicialización al cargar la página
 window.addEventListener('DOMContentLoaded', () => {
   const bienvenido = document.querySelector('.saludo');
-  const aliasGuardado = getLocaleStorage('alias');
+  const aliasGuardado = localStorage.getItem('alias');
 
   if (aliasGuardado) {
     bienvenido.textContent = `Bienvenido/a ${aliasGuardado}`;
-    socket.emit('alias', aliasGuardado);
+    // Asegurar que el modal esté cerrado
     modalManager.close();
   } else {
+    // Pequeño delay para asegurar que todo esté cargado
     setTimeout(() => {
       modalManager.show({
         title: 'Ingresá tu alias',
         placeholder: 'Ej: Nico1337',
-        errorMessage: 'Ingrese un alias válido',
-        validator: (value) => value.trim().length >= 2,
-        onAccept: (alias) => {
-          setLocaleStorage('alias', alias);
-          socket.emit('alias', alias);
-          bienvenido.textContent = `Bienvenido/a ${alias}`;
+        errorMessage: 'Ingrese un alias',
+        validator: (value) => {
+          const trimmedValue = value.trim();
+          return trimmedValue.length >= 2;
         },
-        isMandatory: true
+        onAccept: (alias) => {
+          localStorage.setItem('alias', alias);
+          bienvenido.textContent = `Bienvenido/a ${alias}`;
+          console.log('Alias guardado:', alias);
+        }
       });
     }, 100);
   }
+
+  // Event listener para crear sala
+  document.getElementById('crear-sala').addEventListener('click', crearSala);
 });
-
-const setLocaleStorage = (nombre, valor) => {
-  localStorage.setItem(String(nombre), valor);
-};
-
-const getLocaleStorage = (nombre) => {
-  return localStorage.getItem(nombre);
-};

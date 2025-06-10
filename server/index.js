@@ -7,21 +7,36 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
+const salas = new Set(); // Lista de nombres de salas
 
 // Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Evento de conexión con Socket.IO
 io.on('connection', (socket) => {
-  console.log('Nuevo usuario conectado:', socket.id);
-  
-  //Recibir mensaje de usuario
-socket.on('mensajeChat', (mensaje) => {
+    console.log('Nuevo usuario conectado:', socket.id);
+
+    //Recibir mensaje de usuario
+  socket.on('mensajeChat', (mensaje) => {
   console.log('Mensaje recibido:', mensaje);
   // reenviar el mensaje a todos los clientes conectados
-  io.emit('mensajeChat', mensaje);
-});
 
+  io.emit('mensajeChat', mensaje);
+  });
+
+  //Crear una sala
+  socket.on('crear-sala', (nombreSala) => {
+    if (!salas.has(nombreSala)) {
+      salas.add(nombreSala);
+      console.log(`Sala creada: ${nombreSala}`);
+      socket.join(nombreSala);
+      socket.emit('salaCreada', { exito: true, nombreSala });
+      console.log(salas)
+    } else {
+      socket.emit('salaCreada', { exito: false, error: 'Ya existe' });
+      console.log('Erorr al crear la sala, sala existente')
+    }
+  });
 
 
 
