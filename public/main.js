@@ -167,7 +167,7 @@ const crearSala = () => {
       };
       console.log('Enviando datos de sala:', datosSala);
       socket.emit('crear-sala', datosSala);
-
+      
       containerButtons.style.display = 'none';
       document.querySelector('.saludo').textContent = `Sala "${nombreSala}" creada`;
     }
@@ -187,7 +187,6 @@ const crearSala = () => {
     });
   }, 50); // le damos un mini delay para asegurarnos que ya se haya renderizado
 };
-
 
 // Pedir alias si no está
 window.addEventListener('DOMContentLoaded', () => {
