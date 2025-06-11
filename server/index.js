@@ -24,15 +24,13 @@ io.on('connection', (socket) => {
   
     
     //Recibir mensaje de usuario
-  socket.on('mensajeChat', (mensaje) => {
-
-let hora = getHora()
-  mensaje.hora = horaActual;
+socket.on('mensajeChat', (mensaje) => {
+  let hora = getHora(); // Obtener hora actual
+  mensaje.hora = hora;  // Agregar hora al objeto mensaje
   console.log('Mensaje recibido:', mensaje);
-  // reenviar el mensaje a todos los clientes conectados
-
+  // Reenviar el mensaje a todos los clientes conectados
   io.emit('mensajeChat', mensaje);
-  });
+});
 
   //Crear una sala
   socket.on('crear-sala', (nombreSala) => {
