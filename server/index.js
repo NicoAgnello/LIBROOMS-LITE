@@ -7,12 +7,13 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const salas = new Set(); // Lista de nombres de salas creadas
+const salas = new Map(); // Lista de salas creadas
+const users = new Map() //Lista de alias de usuarios conectados
 
 // Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Evento de conexión con Socket.IO
+// CONEXION CON WEBSOCKET
 io.on('connection', (socket) => {
     console.log('Nuevo usuario conectado:', socket.id);
 /*
@@ -23,31 +24,64 @@ io.on('connection', (socket) => {
 */
   
     
-    //Recibir mensaje de usuario
+    //RECIBIR MENSAJE USUARIO
 socket.on('mensajeChat', (mensaje) => {
   let hora = getHora(); // Obtener hora actual
   mensaje.hora = hora;  // Agregar hora al objeto mensaje
   console.log('Mensaje recibido:', mensaje);
-  // Reenviar el mensaje a todos los clientes conectados
-  io.emit('mensajeChat', mensaje);
+
+  //REENVIAR MENSAJE A SALA GENERAL
+    io.emit('mensajeChat', mensaje);
 });
 
-  //Crear una sala
-  socket.on('crear-sala', (nombreSala) => {
-    if (!salas.has(nombreSala)) {
-      salas.add(nombreSala);
-      console.log(`Sala creada: ${nombreSala}`);
-      socket.join(nombreSala);
-      socket.emit('salaCreada', { exito: true, nombreSala });
+  //CREAR UNA SALA
+  socket.on('crear-sala', (sala) => {
+/* Sala{
+    nombre: "Ejemplo",
+    creador: "Fulanito",
+    hora: "HH:MM",
+    contrasena: "Passwrd"
+}*/
+    if (!salas.has(sala.nombre)) {
+      let hora = getHora(); // Obtener hora actual
+      sala.hora = hora; 
+      salas.add(sala);
+      console.log(`Sala creada: ${sala.nombre}`);
+      socket.join(sala.nombre);
+      socket.emit('salaCreada', { exito: true, sala });
       console.log(salas)
     } else {
-      socket.emit('salaCreada', { exito: false, error: 'Ya existe' });
+      socket.emit('salaCreada', { exito: false, error: `${sala.nombre} ya existe` });
       console.log('Erorr al crear la sala, sala existente')
     }
   });
 
 
+//UNIRSE A UNA SALA
+socket.on('unirseSala', (sala) => {
+  const nombreSala = sala.nombre;
+  if (salas.has(nombreSala)) {
+    const salaCreada = salas.get(nombreSala);
 
+    // Comparamos la contraseña ingresada con la almacenada
+    if (sala.contraseña === salaCreada.contraseña) {
+      socket.join(nombreSala);
+
+      socket.emit('unidoSala', { exito: true, sala: nombreSala });
+      console.log(`Usuario se unió a la sala: ${nombreSala}`);
+    } else {
+      // Si la contraseña es incorrecta, enviamos un error al cliente
+      socket.emit('unidoSala', { exito: false, error: 'La contraseña es incorrecta.' });
+      console.log(`Error: intento de ingresar con contraseña incorrecta a ${nombreSala}`);
+    }
+  } else {
+    socket.emit('unidoSala', { exito: false, error: `La sala "${nombreSala}" no existe.` });
+    console.log(`Error: intento de unirse a sala inexistente (${nombreSala})`);
+  }
+});
+
+
+//DESCONECCION DEL CLIENTE
   socket.on('disconnect', () => {
     console.log('Usuario desconectado:', socket.id);
   });
