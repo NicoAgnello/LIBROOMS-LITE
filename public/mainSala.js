@@ -1,33 +1,40 @@
 const socket = io();
 
-// Función para enviar mensaje
+// Enviar mensaje
 const enviarMensaje = () => {
-  const inputMensaje = document.getElementById("inputMensaje")
-  let mensajeValue = inputMensaje.value
-  let alias = getLocaleStorage("alias")
-  mensaje = {
-    value: mensajeValue,
-    alias: alias
-  }
-  if(mensaje.value != ""){
-      socket.emit("mensajeChat", mensaje)
-  }
-  inputMensaje.value = ""
-}
+  const inputMensaje = document.getElementById("inputMensaje");
+  const mensajeValue = inputMensaje.value.trim();
+  const alias = getLocaleStorage("alias") || 'Anónimo';
+  if (!mensajeValue) return;
 
-//funcion para recibir mensajes del servidor
+  socket.emit("mensajeChat", { value: mensajeValue, alias });
+  inputMensaje.value = "";
+};
+
+document.getElementById('botonEnviarMensaje').addEventListener('click', enviarMensaje);
+
+// ⬇️ NUEVO: Enviar mensaje con Enter solo cuando estás en el input
+document.getElementById('inputMensaje').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault(); // evita que se agregue un salto de línea
+    enviarMensaje();
+  }
+});
+
+// Recibir y mostrar mensajes
 const chatLog = document.getElementById('chat-log');
 socket.on('mensajeChat', (mensaje) => {
   const li = document.createElement('li');
-  li.textContent = mensaje;
+  li.classList.add('chat-message');
+  li.innerHTML = `
+    <span class="msg-time">[${mensaje.hora}]</span>
+    <span class="msg-alias">${mensaje.alias}:</span>
+    <span class="msg-value">${mensaje.value}</span>
+  `;
   chatLog.appendChild(li);
+  chatLog.scrollTop = chatLog.scrollHeight;
 });
 
-
-// Funciones complementarias
-const setLocaleStorage = (nombre, valor) => {
-    localStorage.setItem(String(nombre), valor);
-}
-const getLocaleStorage = (nombre) => {
-    return localStorage.getItem(nombre)
-}
+// Helpers LocalStorage
+const setLocaleStorage = (key, val) => localStorage.setItem(key, val);
+const getLocaleStorage = key => localStorage.getItem(key);
