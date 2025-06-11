@@ -1,50 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>LeibROOMS Lite</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Estilos -->
-    <link rel="stylesheet" href="./main.css" />
-  </head>
-  <body>
-    <header>
-      <div>
-        <img src="./logo.svg" alt="LeibROOMS Lite" height="70" />
-      </div>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <title>LeibROOMS Lite</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Estilos -->
+  <link rel="stylesheet" href="./main.css" />
+</head>
+<body>
+  <header>
+    <img src="./logo.svg" alt="LeibROOMS Lite" height="60" />
+  </header>
+  <main class="main-content">
+    <h2 class="saludo">Bienvenido/a</h2>
+    <div class="buttons-container">
+      <a href="./salaGeneral.html" id="unirse-sala-gral">Unirse a Sala General</a>
+      <button id="crear-sala">Crear Sala</button>
+      <button id="unirse-sala-priv">Unirse a Sala Privada</button>
+    </div>
+  </main>
 
-    <main class="main-content">
-      <h2 class="saludo">Bienvenido/a</h2>
-      <div class="buttons-container">
-        <a href="./salaGeneral.html" id="unirse-sala-gral">Unirse a Sala General</a>
-        <a onclick="crearSala()" id="crear-sala">Crear Sala</a>
-        <button id="unirse-sala-priv">Unirse a Sala Privada</button>
+  <footer>
+    <p>Alejo, Sasha y Nico</p>
+  </footer>
+<!-- Modal Alias -->
+  <div id="alias-modal" class="modal-overlay">
+    <div class="modal">
+      <h2>Ingresá tu alias</h2>
+      <input type="text" id="alias-input" placeholder="Tu alias..." />
+      <p id="alias-error" class="error-message hidden">El alias no puede estar vacío.</p>
+      <button id="alias-accept">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- Modal Crear Sala -->
+  <div id="sala-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <h2>Crear Nueva Sala</h2>
+      <input type="text" id="sala-nombre" placeholder="Nombre de la sala..." />
+      <div class="check-container">
+        <label>
+          <input type="radio" name="sala-tipo" value="publica" checked /> Pública
+        </label>
+        <label>
+          <input type="radio" name="sala-tipo" value="privada" /> Privada
+        </label>
       </div>
-    </main>
-    
-    <!-- Modal Reutilizable -->
-    <div id="modal" class="modal none">
-      <div class="modal-content">
-        <h3 id="modal-title">Ingresá tu alias</h3>
-        <input type="text" id="modal-input" placeholder="Ej: Nico1337" />
-        <div id="modal-extra"></div> <!-- 🔥 esta línea nueva -->
-        <p id="modal-error" class="error-msg">Ingrese un alias</p>
-        <button id="modal-accept" type="button">Aceptar</button>
+      <input
+        type="password"
+        id="sala-password"
+        placeholder="Contraseña (si es privada)"
+        class="hidden"
+      />
+      <p id="sala-error-nombre" class="error-message hidden">
+        El nombre de sala no puede quedar vacío.
+      </p>
+      <p id="sala-error-pass" class="error-message hidden">
+        La contraseña no puede quedar vacía.
+      </p>
+      <div class="modal-buttons">
+        <button id="sala-cancel" class="btn-secondary">Cancelar</button>
+        <button id="sala-accept">Aceptar</button>
       </div>
     </div>
+  </div>
 
-    <footer>
-      <p>Alejo, Sasha y Nico</p>
-    </footer>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="./main.js"></script>
-  </body>
+  <!-- Scripts -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="./main.js"></script>
+</body>
 </html>

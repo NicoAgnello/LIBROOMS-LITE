@@ -19,7 +19,7 @@ const enviarMensaje = () => {
 const chatLog = document.getElementById('chat-log');
 socket.on('mensajeChat', (mensaje) => {
   const li = document.createElement('li');
-  li.textContent = mensaje;
+  li.textContent = mensaje.hora + " - " + mensaje.alias + ": " + mensaje.value;
   chatLog.appendChild(li);
 });
 
