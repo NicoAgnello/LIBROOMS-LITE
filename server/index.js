@@ -37,21 +37,22 @@ socket.on('mensajeChat', (mensaje) => {
   //CREAR UNA SALA
   socket.on('crear-sala', (sala) => {
 /* Sala{
-    nombre: "Ejemplo",
-    creador: "Fulanito",
-    hora: "HH:MM",
-    contrasena: "Passwrd"
+    nombreSala: "Ejemplo",
+    tipoSala: "tipo",
+    contraseña: "Passwrd",
+    alias: "Fulanito",
+    hora: "HH:MM"
 }*/
-    if (!salas.has(sala.nombre)) {
+    if (!salas.has(sala.nombreSala)) {
       let hora = getHora(); // Obtener hora actual
       sala.hora = hora; 
       salas.add(sala);
-      console.log(`Sala creada: ${sala.nombre}`);
-      socket.join(sala.nombre);
+      console.log(`Sala creada: ${sala.nombreSala}`);
+      socket.join(sala.nombreSala);
       socket.emit('salaCreada', { exito: true, sala });
       console.log(salas)
     } else {
-      socket.emit('salaCreada', { exito: false, error: `${sala.nombre} ya existe` });
+      socket.emit('salaCreada', { exito: false, error: `${sala.nombreSala} ya existe` });
       console.log('Erorr al crear la sala, sala existente')
     }
   });
@@ -59,6 +60,15 @@ socket.on('mensajeChat', (mensaje) => {
 
 //UNIRSE A UNA SALA
 socket.on('unirseSala', (sala) => {
+
+  /* Sala{
+    nombreSala: "Ejemplo",
+    tipoSala: "tipo",
+    contraseña: "Passwrd",
+    alias: "Fulanito",
+    hora: "HH:MM"
+}*/
+
   const nombreSala = sala.nombre;
   if (salas.has(nombreSala)) {
     const salaCreada = salas.get(nombreSala);
