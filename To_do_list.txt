@@ -1,0 +1,7 @@
+Back:
+-Rehacer funcion de enviar mensajes para que sea compatible con todas las salas
+
+
+Front:
+-Mandar en la funcion "unirse a sala general" 
+todos los datos nesesarios para unirse a cualquier sala con el nombre e sala "general"

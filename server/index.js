@@ -46,7 +46,7 @@ socket.on('mensajeChat', (mensaje) => {
     if (!salas.has(sala.nombreSala)) {
       let hora = getHora(); // Obtener hora actual
       sala.hora = hora; 
-      salas.add(sala);
+      salas.set(sala.nombreSala, sala);
       console.log(`Sala creada: ${sala.nombreSala}`);
       socket.join(sala.nombreSala);
       socket.emit('salaCreada', { exito: true, sala });
@@ -69,7 +69,7 @@ socket.on('unirseSala', (sala) => {
     hora: "HH:MM"
 }*/
 
-  const nombreSala = sala.nombre;
+  const nombreSala = sala.nombreSala;
   if (salas.has(nombreSala)) {
     const salaCreada = salas.get(nombreSala);
 
