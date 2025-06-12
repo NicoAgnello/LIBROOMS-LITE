@@ -35,7 +35,7 @@ socket.on('mensajeChat', (mensaje) => {
 });
 
   //CREAR UNA SALA
-  socket.on('crear-sala', (sala) => {
+  socket.on('crearSala', (sala) => {
 /* Sala{
     nombreSala: "Ejemplo",
     tipoSala: "tipo",
