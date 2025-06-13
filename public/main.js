@@ -1,8 +1,8 @@
 // main.js
 
 //Conexión Socket.IO
-//const socket = io();
-//socket.on('connect', () => console.log('Cliente conectado con id:', socket.id));
+const socket = io();
+socket.on('connect', () => console.log('Cliente conectado con id:', socket.id));
 
 // Helpers LocalStorage
 const setLocaleStorage = (key, val) => localStorage.setItem(key, val);
