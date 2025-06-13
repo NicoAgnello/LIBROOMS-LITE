@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -20,17 +21,18 @@
     <main class="main-content">
       <h2 class="saludo">Bienvenido/a</h2>
       <div class="buttons-container">
-        <button onclick="unirseSala()" id="unirse-sala-gral">
+        <button id="unirse-sala-gral">
           Unirse a Sala General
         </button>
         <button id="crear-sala">Crear Sala</button>
-        <button id="unirse-sala-priv">Unirse a Sala Privada</button>
+        <button id="unirse-sala">Unirse a Sala</button>
       </div>
     </main>
 
     <footer>
       <p>Alejo, Sasha y Nico</p>
     </footer>
+
     <!-- Modal Alias -->
     <div id="alias-modal" class="modal-overlay">
       <div class="modal">
@@ -76,6 +78,43 @@
         <div class="modal-buttons">
           <button id="sala-cancel" class="btn-secondary">Cancelar</button>
           <button id="sala-accept">Aceptar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Unirse Sala -->
+    <div id="join-modal" class="modal-overlay hidden">
+      <div class="modal">
+        <h2>Unirse a Sala</h2>
+        <input
+          type="text"
+          id="join-nombre"
+          placeholder="Nombre de la sala..."
+        />
+        <div class="check-container">
+          <label>
+            <input type="radio" name="join-tipo" value="publica" checked />
+            Pública
+          </label>
+          <label>
+            <input type="radio" name="join-tipo" value="privada" /> Privada
+          </label>
+        </div>
+        <input
+          type="password"
+          id="join-password"
+          placeholder="Contraseña (si es privada)"
+          class="hidden"
+        />
+        <p id="join-error-nombre" class="error-message hidden">
+          El nombre de sala no puede quedar vacío.
+        </p>
+        <p id="join-error-pass" class="error-message hidden">
+          La contraseña no puede quedar vacía.
+        </p>
+        <div class="modal-buttons">
+          <button id="join-cancel" class="btn-secondary">Cancelar</button>
+          <button id="join-accept">Aceptar</button>
         </div>
       </div>
     </div>

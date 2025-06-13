@@ -5,166 +5,176 @@ const socket = io();
 socket.on('connect', () => console.log('Cliente conectado con id:', socket.id));
 
 // Helpers LocalStorage
-const setLocaleStorage = (key, val) => localStorage.setItem(key, val);
-const getLocaleStorage = key => localStorage.getItem(key);
+const setLocaleStorage = (k, v) => localStorage.setItem(k, v);
+const getLocaleStorage = k => localStorage.getItem(k);
 
-// Inicializa modal de alias y actualiza saludo
+// — Alias Modal —
 function initAliasModal() {
   const modal = document.getElementById('alias-modal');
-  const input = document.getElementById('alias-input');
-  const error = document.getElementById('alias-error');
-  const btn = document.getElementById('alias-accept');
+  const inp   = document.getElementById('alias-input');
+  const err   = document.getElementById('alias-error');
+  const btn   = document.getElementById('alias-accept');
   const saludo = document.querySelector('.saludo');
 
-  const show = () => {
-    modal.classList.remove('hidden');
-    input.value = '';
-    error.classList.add('hidden');
-    input.focus();
-  };
-  const hide = () => modal.classList.add('hidden');
-
-  const updateGreeting = () => {
-    const alias = getLocaleStorage('alias');
-    saludo.textContent = alias ? `Bienvenido/a ${alias}` : 'Bienvenido/a';
+  const show = ()=>{ modal.classList.remove('hidden'); inp.value=''; err.classList.add('hidden'); inp.focus(); };
+  const hide = ()=> modal.classList.add('hidden');
+  const update = ()=>{
+    const a = getLocaleStorage('alias');
+    saludo.textContent = a ? `Bienvenido/a ${a}` : 'Bienvenido/a';
   };
 
-  if (getLocaleStorage('alias')) {
-    hide();
-    updateGreeting();
-  } else {
-    show();
-  }
+  getLocaleStorage('alias') ? (hide(), update()) : show();
 
-  const validate = () => {
-    const val = input.value.trim();
-    if (!val) {
-      error.classList.remove('hidden');
-      return;
-    }
-    setLocaleStorage('alias', val);
-    hide();
-    updateGreeting();
+  const validar = ()=>{
+    const v = inp.value.trim();
+    if (!v) { err.classList.remove('hidden'); return; }
+    setLocaleStorage('alias', v);
+    hide(); update();
   };
-
-  btn.addEventListener('click', validate);
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') validate();
-  });
+  btn.addEventListener('click', validar);
+  inp.addEventListener('keydown', e=> e.key==='Enter' && validar());
 }
 
-// Inicializa modal de creación de sala
+// — Crear Sala Modal —
 function initSalaModal() {
-  const modal      = document.getElementById('sala-modal');
-  const nombreIn   = document.getElementById('sala-nombre');
-  const radios     = [...document.getElementsByName('sala-tipo')];
-  const passIn     = document.getElementById('sala-password');
-  const errName    = document.getElementById('sala-error-nombre');
-  const errPass    = document.getElementById('sala-error-pass');
-  const btnOk      = document.getElementById('sala-accept');
-  const btnCancel  = document.getElementById('sala-cancel');
+  const modal = document.getElementById('sala-modal');
+  const nombre = document.getElementById('sala-nombre');
+  const radios = [...document.getElementsByName('sala-tipo')];
+  const pass   = document.getElementById('sala-password');
+  const errN   = document.getElementById('sala-error-nombre');
+  const errP   = document.getElementById('sala-error-pass');
+  const btnOk  = document.getElementById('sala-accept');
+  const btnCancel = document.getElementById('sala-cancel');
 
-  const show = () => { modal.classList.remove('hidden'); nombreIn.focus(); };
-  const hide = () => {
+  const show = ()=>{ modal.classList.remove('hidden'); nombre.focus(); };
+  const hide = ()=>{
     modal.classList.add('hidden');
-    nombreIn.value = '';
-    passIn.value = '';
-    errName.classList.add('hidden');
-    errPass.classList.add('hidden');
+    nombre.value = '';
+    pass.value   = '';
+    errN.classList.add('hidden');
+    errP.classList.add('hidden');
     radios[0].checked = true;
-    passIn.classList.add('hidden');
+    pass.classList.add('hidden');
   };
 
-  radios.forEach(r => r.addEventListener('change', () => {
-    if (r.value === 'privada' && r.checked) passIn.classList.remove('hidden');
-    else passIn.classList.add('hidden');
-    errPass.classList.add('hidden');
-  }));
+  radios.forEach(r=>{
+    r.addEventListener('change', ()=>{
+      if (r.value==='privada' && r.checked) pass.classList.remove('hidden');
+      else pass.classList.add('hidden');
+      errP.classList.add('hidden');
+    });
+  });
 
-  const crearSala = () => {
-    const name = nombreIn.value.trim();
-    const tipo = radios.find(r => r.checked).value;
-    const pass = passIn.value.trim();
-    let valid = true;
+  const crear = ()=>{
+    let ok = true;
+    if (!nombre.value.trim()) { errN.classList.remove('hidden'); ok=false; }
+    else                        errN.classList.add('hidden');
+    const tipo = radios.find(r=>r.checked).value;
+    if (tipo==='privada' && !pass.value.trim()) {
+      errP.classList.remove('hidden');
+      ok=false;
+    } else errP.classList.add('hidden');
+    if (!ok) return;
 
-    if (!name) {
-      errName.classList.remove('hidden');
-      valid = false;
-    } else {
-      errName.classList.add('hidden');
-    }
-
-    if (tipo === 'privada' && !pass) {
-      errPass.classList.remove('hidden');
-      valid = false;
-    } else {
-      errPass.classList.add('hidden');
-    }
-
-    if (!valid) return;
-
-    const alias = getLocaleStorage('alias') || 'Anónimo';
-    const privada = tipo === 'privada';
-    const salaObj = {
-      nombreSala: name,
-      privada,
-      contraseña: privada ? pass : '',
-      alias
+    const a = getLocaleStorage('alias')||'Anónimo';
+    const sala = {
+      nombreSala: nombre.value.trim(),
+      privada: tipo==='privada',
+      ...(tipo==='privada' && { contraseña: pass.value.trim() }),
+      alias: a
     };
-
-    socket.emit('crearSala', salaObj);
-    console.log('Sala creada:', salaObj);
-
-    unirseSala(name, privada, pass);
+    socket.emit('crearSala', sala);
+    unirseSala(sala);
     hide();
   };
 
   document.getElementById('crear-sala')
-    .addEventListener('click', e => { e.preventDefault(); show(); });
-
-  btnOk.addEventListener('click', crearSala);
-  [nombreIn, passIn].forEach(el =>
-    el.addEventListener('keydown', e => {
-      if (e.key === 'Enter') crearSala();
-    })
-  );
+    .addEventListener('click', e=>{ e.preventDefault(); show(); });
+  btnOk.addEventListener('click', crear);
   btnCancel.addEventListener('click', hide);
 }
 
-// Función genérica para unirse a una sala
-function unirseSala(nombre = 'general', privada = false, contraseña = '') {
-  const alias = getLocaleStorage('alias') || 'Anónimo';
-  const salaObj = {
-    nombreSala: nombre,
-    privada,
-    contraseña: privada ? contraseña : '',
-    alias
+// — Unirse Sala Modal —
+function initJoinModal() {
+  const modal = document.getElementById('join-modal');
+  const nombre = document.getElementById('join-nombre');
+  const radios = [...document.getElementsByName('join-tipo')];
+  const pass   = document.getElementById('join-password');
+  const errN   = document.getElementById('join-error-nombre');
+  const errP   = document.getElementById('join-error-pass');
+  const btnOk  = document.getElementById('join-accept');
+  const btnCancel = document.getElementById('join-cancel');
+
+  const show = ()=>{ modal.classList.remove('hidden'); nombre.focus(); };
+  const hide = ()=>{
+    modal.classList.add('hidden');
+    nombre.value = '';
+    pass.value   = '';
+    errN.classList.add('hidden');
+    errP.classList.add('hidden');
+    radios[0].checked = true;
+    pass.classList.add('hidden');
   };
 
-  socket.emit('unirseSala', salaObj);
-  console.log('Unido a sala:', salaObj);
+  radios.forEach(r=>{
+    r.addEventListener('change', ()=>{
+      if (r.value==='privada' && r.checked) pass.classList.remove('hidden');
+      else pass.classList.add('hidden');
+      errP.classList.add('hidden');
+    });
+  });
 
-  localStorage.setItem('salaActual', nombre);
+  const unir = ()=>{
+    let ok = true;
+    if (!nombre.value.trim()) { errN.classList.remove('hidden'); ok=false; }
+    else                        errN.classList.add('hidden');
+    const tipo = radios.find(r=>r.checked).value;
+    if (tipo==='privada' && !pass.value.trim()) {
+      errP.classList.remove('hidden');
+      ok=false;
+    } else errP.classList.add('hidden');
+    if (!ok) return;
+
+    const sala = {
+      nombreSala: nombre.value.trim(),
+      privada: tipo==='privada',
+      ...(tipo==='privada' && { contraseña: pass.value.trim() }),
+      alias: getLocaleStorage('alias') || 'Anónimo'
+    };
+    socket.emit('unirseSala', sala);
+    localStorage.setItem('salaActual', sala.nombreSala);
+    window.location.href = 'salaGeneral.html';
+    hide();
+  };
+
+  document.getElementById('unirse-sala')
+    .addEventListener('click', e=>{ e.preventDefault(); show(); });
+  btnOk.addEventListener('click', unir);
+  btnCancel.addEventListener('click', hide);
+}
+
+// — Función genérica (para crearSala) —
+function unirseSala(sala) {
+  localStorage.setItem('salaActual', sala.nombreSala);
   window.location.href = 'salaGeneral.html';
 }
 
-// Iniciar todo
+// — Init al cargar página —
 window.addEventListener('load', () => {
   initAliasModal();
   initSalaModal();
+  initJoinModal();
 
+  // Botón Unirse Sala General
   document.getElementById('unirse-sala-gral')
     .addEventListener('click', e => {
       e.preventDefault();
-      unirseSala();
-    });
-
-  document.getElementById('unirse-sala-priv')
-    .addEventListener('click', e => {
-      e.preventDefault();
-      const nombre = prompt('¿Cómo se llama la sala privada?').trim();
-      const pass = prompt('Contraseña:').trim();
-      if (nombre && pass) unirseSala(nombre, true, pass);
-      else alert('Debes ingresar nombre y contraseña válidos.');
+      socket.emit('unirseSala', {
+        nombreSala: 'general',
+        privada: false,
+        alias: getLocaleStorage('alias') || 'Anónimo'
+      });
+      localStorage.setItem('salaActual', 'general');
+      window.location.href = 'salaGeneral.html';
     });
 });
