@@ -1,40 +1,63 @@
-const socket = io();
+// mainSala.js
 
-// Enviar mensaje
-const enviarMensaje = () => {
-  const inputMensaje = document.getElementById("inputMensaje");
-  const mensajeValue = inputMensaje.value.trim();
-  const alias = getLocaleStorage("alias") || 'Anónimo';
-  if (!mensajeValue) return;
+window.addEventListener('DOMContentLoaded', () => {
+  // Conexión Socket.IO
+  const socket = io();
 
-  socket.emit("mensajeChat", { value: mensajeValue, alias });
-  inputMensaje.value = "";
-};
+  // Helpers LocalStorage
+  const getLocaleStorage = key => localStorage.getItem(key);
 
-document.getElementById('botonEnviarMensaje').addEventListener('click', enviarMensaje);
+  // 1. Recuperar nombre de sala guardado
+  const room = localStorage.getItem('salaActual') || 'general';
 
-// ⬇️ NUEVO: Enviar mensaje con Enter solo cuando estás en el input
-document.getElementById('inputMensaje').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault(); // evita que se agregue un salto de línea
-    enviarMensaje();
+  // 2. Mostrar nombre de sala en el encabezado
+  const roomNameEl = document.getElementById('room-name');
+  if (roomNameEl) {
+    roomNameEl.textContent = `Sala: ${room}`;
   }
-});
 
-// Recibir y mostrar mensajes
-const chatLog = document.getElementById('chat-log');
-socket.on('mensajeChat', (mensaje) => {
-  const li = document.createElement('li');
-  li.classList.add('chat-message');
-  li.innerHTML = `
-    <span class="msg-time">[${mensaje.hora}]</span>
-    <span class="msg-alias">${mensaje.alias}:</span>
-    <span class="msg-value">${mensaje.value}</span>
-  `;
-  chatLog.appendChild(li);
-  chatLog.scrollTop = chatLog.scrollHeight;
-});
+  // 3. Unirse al room en el servidor (re-emisión para el nuevo socket)
+  const alias = getLocaleStorage('alias') || 'Anónimo';
+  socket.emit('unirseSala', {
+    nombreSala: room,
+    privada: false,
+    contraseña: '',
+    alias
+  });
 
-// Helpers LocalStorage
-const setLocaleStorage = (key, val) => localStorage.setItem(key, val);
-const getLocaleStorage = key => localStorage.getItem(key);
+  // 4. Enviar mensaje
+  const enviarMensaje = () => {
+    const inputMensaje = document.getElementById('inputMensaje');
+    const mensajeValue = inputMensaje.value.trim();
+    if (!mensajeValue) return;
+    socket.emit('mensajeChat', { value: mensajeValue, alias });
+    inputMensaje.value = '';
+  };
+
+  document
+    .getElementById('botonEnviarMensaje')
+    .addEventListener('click', enviarMensaje);
+
+  document
+    .getElementById('inputMensaje')
+    .addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        enviarMensaje();
+      }
+    });
+
+  // 5. Recibir y mostrar mensajes
+  const chatLog = document.getElementById('chat-log');
+  socket.on('mensajeChat', mensaje => {
+    const li = document.createElement('li');
+    li.classList.add('chat-message');
+    li.innerHTML = `
+      <span class="msg-time">[${mensaje.hora}]</span>
+      <span class="msg-alias">${mensaje.alias}:</span>
+      <span class="msg-value">${mensaje.value}</span>
+    `;
+    chatLog.appendChild(li);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  });
+});

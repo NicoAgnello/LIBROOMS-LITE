@@ -1,46 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>LeibROOMS Lite - Sala</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./mainSala.css">
-</head>
-<body>
-  <header>
-    <div class="header-content">
-      <img src="./logo.svg" alt="LeibROOMS Lite" height="60">
-    </div>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <title>LeibROOMS Lite - Sala</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./mainSala.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <img src="./logo.svg" alt="LeibROOMS Lite" height="60" />
+      </div>
+    </header>
 
-  <main class="main-content">
-    <div class="container-chat">
-      <section class="chat-box">
-        <ul id="chat-log" class="lista-chat">
-          <!-- mensajes -->
-        </ul>
-      </section>
-      <aside class="usuarios-box">
-        <h2>Conectados</h2>
-        <ul class="lista-usuarios">
-          <!-- usuarios -->
-        </ul>
-      </aside>
-    </div>
+    <main class="main-content">
+      <!-- Encabezado de sala -->
+      <div class="room-header">
+        <h2 id="room-name">Sala: general</h2>
+      </div>
 
-    <div class="input-container">
-      <input type="text" id="inputMensaje" placeholder="Escribí tu mensaje...">
-      <button id="botonEnviarMensaje">Enviar</button>
-    </div>
-  </main>
+      <!-- Chat y lista de usuarios -->
+      <div class="container-chat">
+        <section class="chat-box">
+          <ul id="chat-log" class="lista-chat">
+            <!-- mensajes -->
+          </ul>
+        </section>
+        <aside class="usuarios-box">
+          <h2>Conectados</h2>
+          <ul class="lista-usuarios">
+            <!-- usuarios -->
+          </ul>
+        </aside>
+      </div>
 
-  <footer>
-    <p>Alejo, Sasha y Nico</p>
-  </footer>
+      <!-- Input para enviar -->
+      <div class="input-container">
+        <input
+          type="text"
+          id="inputMensaje"
+          placeholder="Escribí tu mensaje..."
+        />
+        <button id="botonEnviarMensaje">Enviar</button>
+      </div>
+    </main>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="./mainSala.js"></script>
-</body>
+    <footer>
+      <p>Alejo, Sasha y Nico</p>
+    </footer>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./mainSala.js"></script>
+  </body>
 </html>

@@ -6,27 +6,42 @@
   --color-text-light:  #FFFFFF;
   --font-primary: 'Rubik', sans-serif;
 }
+
 * {
-  margin: 0; padding: 0; box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: var(--font-primary);
 }
-html, body { height: 100%; }
-body { display: flex; flex-direction: column; }
 
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabecera principal */
 header {
   background: var(--color-header);
   padding: 0.5rem 1rem;
 }
+
 .header-content {
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
   justify-content: center;
   gap: 0.5rem;
 }
+
 .header-content h1 {
-  font-size: 1.5rem; color: var(--color-bg-dark);
+  font-size: 1.5rem;
+  color: var(--color-bg-dark);
 }
 
+/* Contenido principal */
 .main-content {
   flex: 1;
   background: var(--color-bg-dark);
@@ -35,6 +50,18 @@ header {
   padding: 1rem;
 }
 
+/* Título de la sala, centrado y separado */
+.room-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.room-header h2 {
+  font-size: 1.5rem;
+  color: var(--color-light);
+}
+
+/* Grid de chat y usuarios */
 .container-chat {
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -45,43 +72,56 @@ header {
   flex: 1;
 }
 
-.chat-box, .usuarios-box {
+/* Cajón de mensajes y lista de usuarios */
+.chat-box,
+.usuarios-box {
   background: var(--color-light);
   padding: 1rem;
   overflow-y: auto;
 }
+
 .chat-box {
-  display: flex; flex-direction: column;
+  display: flex;
+  flex-direction: column;
   min-height: 200px;
 }
+
 .lista-chat {
   list-style: none;
 }
 
+/* Usuarios conectados */
 .usuarios-box h2 {
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
   color: var(--color-bg-dark);
 }
+
 .lista-usuarios {
   list-style: none;
 }
+
 .lista-usuarios li {
   margin-bottom: 0.5rem;
   color: var(--color-bg-dark);
 }
 
+/* Entrada de mensaje y botón - restauramos estilo original */
 .input-container {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   margin-top: 1rem;
 }
+
 #inputMensaje {
   flex: 1;
   padding: 0.8rem;
   border-radius: 0.5rem;
   border: 1px solid #ccc;
+  font-size: 1rem;
 }
+
 #botonEnviarMensaje {
   padding: 0.8rem 1.5rem;
   border: none;
@@ -89,25 +129,31 @@ header {
   background: var(--color-accent);
   color: var(--color-text-light);
   cursor: pointer;
+  font-size: 1rem;
 }
 
+/* Mensajes individuales */
 .chat-message {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
+
 .msg-time {
   color: #666;
   font-size: 0.8rem;
 }
+
 .msg-alias {
   font-weight: bold;
   color: var(--color-bg-dark);
 }
+
 .msg-value {
   color: var(--color-bg-dark);
 }
 
+/* Pie de página - restaurado */
 footer {
   background: var(--color-light);
   padding: 0.5rem;
