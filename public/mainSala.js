@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const inputMensaje = document.getElementById('inputMensaje');
     const mensajeValue = inputMensaje.value.trim();
     if (!mensajeValue) return;
-    socket.emit('mensajeChat', { value: mensajeValue, alias });
+    socket.emit('mensajeChat', { value: mensajeValue, room , alias});
     inputMensaje.value = '';
   };
 
