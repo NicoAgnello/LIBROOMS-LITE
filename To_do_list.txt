@@ -3,5 +3,17 @@ Back:
 
 
 Front:
+-realizar funcion para unirse a las salas con el objeto correspondiente:
+UTILIZAR EL SIGUIENTE ESQUEMA
+  /* Sala{
+    nombreSala: "Ejemplo",
+    privada: "true" //booleano, true si es priv flase si es public
+    contraseña: "Passwrd", //no hace falta si es publica
+    alias: "Fulanito" //Usuario que se esta conectando
+    hora: "HH:MM"
+}*/
+
+
 -Mandar en la funcion "unirse a sala general" 
 todos los datos nesesarios para unirse a cualquier sala con el nombre e sala "general"
+
