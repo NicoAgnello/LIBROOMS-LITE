@@ -3,6 +3,41 @@
 //Conexión Socket.IO
 const socket = io();
 socket.on('connect', () => console.log('Cliente conectado con id:', socket.id));
+// Redireccion a sala
+socket.on('salaCreada', (respuesta) => {
+  if (respuesta.exito) {
+    const sala = respuesta.sala;
+    localStorage.setItem('salaActual', sala.nombreSala);
+    window.location.href = 'salaGeneral.html';
+    document.getElementById('sala-modal').classList.add('hidden');
+  } else {
+    const errN = document.getElementById('sala-error-nombre');
+    errN.textContent = respuesta.error || 'Error al crear sala';
+    errN.classList.remove('hidden');
+  }
+});
+socket.on('unidoSala', (respuesta) => {
+  if (respuesta.exito) {
+    localStorage.setItem('salaActual', respuesta.sala);
+    window.location.href = 'salaGeneral.html';
+    document.getElementById('join-modal').classList.add('hidden');
+  } else {
+    const errN = document.getElementById('join-error-nombre');
+    const errP = document.getElementById('join-error-pass');
+    
+    // Resetear ambos mensajes primero
+    errN.classList.add('hidden');
+    errP.classList.add('hidden');
+
+    if (respuesta.error.includes('contraseña')) {
+      errP.textContent = respuesta.error;
+      errP.classList.remove('hidden');
+    } else {
+      errN.textContent = respuesta.error;
+      errN.classList.remove('hidden');
+    }
+  }
+});
 
 // Helpers LocalStorage
 const setLocaleStorage = (k, v) => localStorage.setItem(k, v);
@@ -65,29 +100,26 @@ function initSalaModal() {
     });
   });
 
-  const crear = ()=>{
+ const crear = ()=> {
     let ok = true;
-    if (!nombre.value.trim()) { errN.classList.remove('hidden'); ok=false; }
-    else                        errN.classList.add('hidden');
-    const tipo = radios.find(r=>r.checked).value;
-    if (tipo==='privada' && !pass.value.trim()) {
-      errP.classList.remove('hidden');
-      ok=false;
+    if (!nombre.value.trim()) { errN.classList.remove('hidden'); ok = false; }
+    else errN.classList.add('hidden');
+    const tipo = radios.find(r => r.checked).value;
+    if (tipo === 'privada' && !pass.value.trim()) {
+      errP.classList.remove('hidden'); ok = false;
     } else errP.classList.add('hidden');
     if (!ok) return;
 
-    const a = getLocaleStorage('alias')||'Anónimo';
+    const a = getLocaleStorage('alias') || 'Anónimo';
     const sala = {
       nombreSala: nombre.value.trim(),
-      privada: tipo==='privada',
-      ...(tipo==='privada' && { contraseña: pass.value.trim() }),
+      privada: tipo === 'privada',
+      ...(tipo === 'privada' && { contraseña: pass.value.trim() }),
       alias: a
     };
-    socket.emit('crearSala', sala);
-    unirseSala(sala);
-    hide();
-  };
 
+    socket.emit('crearSala', sala);
+  };
   document.getElementById('crear-sala')
     .addEventListener('click', e=>{ e.preventDefault(); show(); });
   btnOk.addEventListener('click', crear);
@@ -124,28 +156,26 @@ function initJoinModal() {
     });
   });
 
-  const unir = ()=>{
+  const unir = ()=> {
     let ok = true;
-    if (!nombre.value.trim()) { errN.classList.remove('hidden'); ok=false; }
-    else                        errN.classList.add('hidden');
-    const tipo = radios.find(r=>r.checked).value;
-    if (tipo==='privada' && !pass.value.trim()) {
-      errP.classList.remove('hidden');
-      ok=false;
+    if (!nombre.value.trim()) { errN.classList.remove('hidden'); ok = false; }
+    else errN.classList.add('hidden');
+    const tipo = radios.find(r => r.checked).value;
+    if (tipo === 'privada' && !pass.value.trim()) {
+      errP.classList.remove('hidden'); ok = false;
     } else errP.classList.add('hidden');
     if (!ok) return;
 
     const sala = {
       nombreSala: nombre.value.trim(),
-      privada: tipo==='privada',
-      ...(tipo==='privada' && { contraseña: pass.value.trim() }),
+      privada: tipo === 'privada',
+      ...(tipo === 'privada' && { contraseña: pass.value.trim() }),
       alias: getLocaleStorage('alias') || 'Anónimo'
     };
-    socket.emit('unirseSala', sala);
-    localStorage.setItem('salaActual', sala.nombreSala);
-    window.location.href = 'salaGeneral.html';
-    hide();
+
+    socket.emit('unirseSala', sala); // solo esto
   };
+
 
   document.getElementById('unirse-sala')
     .addEventListener('click', e=>{ e.preventDefault(); show(); });
