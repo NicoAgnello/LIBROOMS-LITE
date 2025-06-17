@@ -43,7 +43,7 @@ socket.on('mensajeChat', (mensaje) => {
   console.log(mensaje)
   let hora = getHora(); // Obtener hora actual
   mensaje.hora = hora;  // Agregar hora al objeto mensaje
-  console.log(`Mensaje recibido (${mensaje.value}) para sala (${mensaje.room})`);
+  console.log(`Mensaje recibido (${mensaje.value}) para sala (${mensaje.room}) de ${mensaje.alias}`);
 
   //REENVIAR MENSAJE A SALA GENERAL
     io.to(mensaje.room).emit('mensajeChat', mensaje);
@@ -103,6 +103,7 @@ socket.on('unirseSala', (sala) => {
     contraseña: "Passwrd",
     alias: "Fulanito",
     hora: "HH:MM"
+    usuariosConectados: "array con usuarios"
 }*/
 
   const nombreSala = sala.nombreSala;

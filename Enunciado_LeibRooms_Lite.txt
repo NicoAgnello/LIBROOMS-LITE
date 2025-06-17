@@ -18,7 +18,11 @@ Desarrollen un chat multicanal (“LeibRooms Lite”) con las siguientes caracte
 • Mensajes en tiempo real: Envío y recepción instantánea mediante Socket.IO. Cada mensaje muestra alias y hora.
 • Lista de participantes: Visualizar en vivo quiénes están conectados a la sala.
 
-Extras optativos (+10 %): estado “escribiendo…”, emojis, contador de mensajes o la opción de definir salas públicas/privadas
+Extras optativos (+10 %): 
+estado “escribiendo…”,
+   emojis,
+   contador de mensajes o
+   la opción de definir salas públicas/privadas
  (las privadas solicitan un código de acceso simple).
 3. Requisitos técnicos
 1. Node.js.
