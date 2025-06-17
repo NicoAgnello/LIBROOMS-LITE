@@ -85,6 +85,7 @@ if (!salas.has(sala.nombreSala)) {
       }
       console.log(`🟢Sala creada: ${sala.nombreSala} tipo: ${tiposala}, creada por ${sala.alias}`);
       socket.join(sala.nombreSala);
+      registrarUsuarioEnSala(socket, sala.nombreSala, sala.alias); // Agregar usuario creador
       socket.emit('salaCreada', { exito: true, sala });
       console.log(salas)
     } else {
@@ -145,12 +146,18 @@ socket.on('disconnect', () => {
     const { alias, sala } = info;
     if (salas.has(sala)) {
       const salaObj = salas.get(sala);
+
+      // Eliminar al usuario de la lista
       salaObj.usuariosConectados = salaObj.usuariosConectados.filter(user => user !== alias);
       console.log(`Usuario ${alias} eliminado de la sala ${sala}`);
+
+      // 🔥 Emitir actualización de usuarios conectados
+      io.to(sala).emit('actualizarUsuarios', salaObj.usuariosConectados);
     }
     userInfo.delete(socket.id);
   }
 });
+
 
 /*
 //DESCONECCION DEL CLIENTE
@@ -181,6 +188,8 @@ function registrarUsuarioEnSala(socket, salaNombre, alias) {
   if (!sala.usuariosConectados.includes(alias)) {
     sala.usuariosConectados.push(alias);
   }
+   // Emitir la lista actualizada de usuarios a todos en la sala
+  io.to(salaNombre).emit('actualizarUsuarios', sala.usuariosConectados);
 }
 // Levantar el servidor
 const PORT = 3000;
