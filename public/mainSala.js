@@ -60,4 +60,16 @@ window.addEventListener('DOMContentLoaded', () => {
     chatLog.appendChild(li);
     chatLog.scrollTop = chatLog.scrollHeight;
   });
+
+    // 6. Recibir y renderizar usuarios conectados
+  const listaUsuarios = document.querySelector('.lista-usuarios');
+
+  socket.on('actualizarUsuarios', (usuarios) => {
+    listaUsuarios.innerHTML = ''; // Limpiar lista
+    usuarios.forEach(alias => {
+      const li = document.createElement('li');
+      li.textContent = "  🟢  " + alias;
+      listaUsuarios.appendChild(li);
+    });
+  });
 });
