@@ -88,9 +88,11 @@ if (!salas.has(sala.nombreSala)) {
       registrarUsuarioEnSala(socket, sala.nombreSala, sala.alias); // Agregar usuario creador
       socket.emit('salaCreada', { exito: true, sala });
       console.log(salas)
+      console.log('salaCreada', { exito: true, sala });
     } else {
       socket.emit('salaCreada', { exito: false, error: `${sala.nombreSala} ya existe` });
       console.log('Erorr al crear la sala, sala existente')
+      console.log('salaCreada', { exito: false, sala });
     }
   });
 
@@ -200,7 +202,7 @@ const os = require('os');
 function crearSalaGeneral() {
   const hora = getHora();
   const salaGeneral = {
-    nombreSala: "general",
+    nombreSala: "General",
     privada: false,
     contraseña: "",  // No se necesita para pública
     alias: "Sistema", // Quien la crea (podés usar otro identificador si querés)

@@ -170,7 +170,7 @@ window.addEventListener('load', () => {
     .addEventListener('click', e => {
       e.preventDefault();
       socket.emit('unirseSala', {
-        nombreSala: 'general',
+        nombreSala: 'General',
         privada: false,
         alias: getLocaleStorage('alias') || 'Anónimo'
       });
