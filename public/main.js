@@ -7,6 +7,13 @@ socket.on('connect', () => console.log('Cliente conectado con id:', socket.id));
 socket.on('salaCreada', (respuesta) => {
   if (respuesta.exito) {
     const sala = respuesta.sala;
+    sessionStorage.setItem("salaJoinData", JSON.stringify({
+      nombreSala: sala.nombreSala,
+      privada: sala.privada,
+      contrasena: sala.contrasena || "",
+      alias: sala.alias
+
+    }))
     localStorage.setItem('salaActual', sala.nombreSala);
     window.location.href = 'salaGeneral.html';
     document.getElementById('sala-modal').classList.add('hidden');
@@ -114,7 +121,7 @@ function initSalaModal() {
     const sala = {
       nombreSala: nombre.value.trim(),
       privada: tipo === 'privada',
-      ...(tipo === 'privada' && { contraseña: pass.value.trim() }),
+      ...(tipo === 'privada' && { contrasena: pass.value.trim() }),
       alias: a
     };
 
@@ -169,12 +176,16 @@ function initJoinModal() {
     const sala = {
       nombreSala: nombre.value.trim(),
       privada: tipo === 'privada',
-      ...(tipo === 'privada' && { contraseña: pass.value.trim() }),
+      ...(tipo === 'privada' && { contrasena: pass.value.trim() }),
       alias: getLocaleStorage('alias') || 'Anónimo'
     };
 
+    sessionStorage.setItem("salaJoin", JSON.stringify(sala))
+
     socket.emit('unirseSala', sala); // solo esto
+    localStorage.setItem('salaActual', sala.nombreSala)
     console.log(sala)
+    window.location.href="salaGeneral.html"
   };
 
 

@@ -7,23 +7,52 @@ window.addEventListener('DOMContentLoaded', () => {
   // Helpers LocalStorage
   const getLocaleStorage = key => localStorage.getItem(key);
 
+
+
+
   // 1. Recuperar nombre de sala guardado
   const room = localStorage.getItem('salaActual') || 'general';
-
+  const alias = localStorage.getItem('alias')
   // 2. Mostrar nombre de sala en el encabezado
   const roomNameEl = document.getElementById('room-name');
   if (roomNameEl) {
     roomNameEl.textContent = `Sala: ${room}`;
   }
 
+  
   // 3. Unirse al room en el servidor (re-emisión para el nuevo socket)
+/*
   const alias = getLocaleStorage('alias') || 'Anónimo';
   socket.emit('unirseSala', {
     nombreSala: room,
     privada: false,
-    contraseña: '',
+    contrasena: '', 
     alias
   });
+*/
+
+// 1. ¿Vengo de crear una sala privada?
+let salaPayload = null;
+const raw = sessionStorage.getItem('salaJoinData');
+if (raw) {
+  salaPayload = JSON.parse(raw);
+   // ya no lo necesitamos
+  sessionStorage.removeItem('salaJoinData');
+} else {
+   // join “normal” (pública o general)
+  salaPayload = {
+    nombreSala: localStorage.getItem('salaActual') || 'General',
+    privada: false,
+    contrasena: '',
+    alias: alias
+  };
+}
+ // Mostrar nombre de sala en el header
+document.getElementById('room-name').textContent = `Sala: ${salaPayload.nombreSala}`;
+ // 2. Emitir la solicitud de unión correcta
+socket.emit('unirseSala', salaPayload);
+
+
 
   // 4. Enviar mensaje
   const enviarMensaje = () => {

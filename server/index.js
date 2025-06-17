@@ -118,7 +118,7 @@ socket.on('unirseSala', (sala) => {
       console.log(sala)
       console.log(salaCreada)
 
-      if (sala.contraseña === salaCreada.contraseña) {
+      if (sala.contrasena === salaCreada.contrasena) {
         socket.join(nombreSala);
         registrarUsuarioEnSala(socket, nombreSala, sala.alias);
 
@@ -209,7 +209,7 @@ function crearSalaGeneral() {
   const salaGeneral = {
     nombreSala: "General",
     privada: false,
-    contraseña: "",  // No se necesita para pública
+    contrasena: "",  // No se necesita para pública
     alias: "Sistema", // Quien la crea (podés usar otro identificador si querés)
     hora: hora,
     usuariosConectados: []
