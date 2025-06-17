@@ -112,9 +112,12 @@ socket.on('unirseSala', (sala) => {
   const nombreSala = sala.nombreSala;
   if (salas.has(nombreSala)) {
     const salaCreada = salas.get(nombreSala);
-
     // Comparamos la contraseña ingresada con la almacenada
-    if(sala.tipo === true){ //validar si es privada o publica
+    if(salaCreada.privada === true){ //validar si es privada o publica
+      console.log(`test: ......}`)
+      console.log(sala)
+      console.log(salaCreada)
+
       if (sala.contraseña === salaCreada.contraseña) {
         socket.join(nombreSala);
         registrarUsuarioEnSala(socket, nombreSala, sala.alias);
@@ -129,10 +132,12 @@ socket.on('unirseSala', (sala) => {
       }
     }
     else { //sala publica
+
             socket.join(nombreSala);
       socket.emit('unidoSala', { exito: true, sala: nombreSala });
       console.log(`${sala.alias} se unió a la sala: ${nombreSala}`);
       registrarUsuarioEnSala(socket, nombreSala, sala.alias);
+
     }
   } else {
     socket.emit('unidoSala', { exito: false, error: `La sala "${nombreSala}" no existe.` });
@@ -154,7 +159,7 @@ socket.on('disconnect', () => {
       salaObj.usuariosConectados = salaObj.usuariosConectados.filter(user => user !== alias);
       console.log(`Usuario ${alias} eliminado de la sala ${sala}`);
 
-      // 🔥 Emitir actualización de usuarios conectados
+      //Emitir actualización de usuarios conectados
       io.to(sala).emit('actualizarUsuarios', salaObj.usuariosConectados);
     }
     userInfo.delete(socket.id);

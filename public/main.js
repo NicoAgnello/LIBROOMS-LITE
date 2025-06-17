@@ -100,7 +100,7 @@ function initSalaModal() {
     });
   });
 
- const crear = ()=> {
+  const crear = ()=> {
     let ok = true;
     if (!nombre.value.trim()) { errN.classList.remove('hidden'); ok = false; }
     else errN.classList.add('hidden');
@@ -174,6 +174,7 @@ function initJoinModal() {
     };
 
     socket.emit('unirseSala', sala); // solo esto
+    console.log(sala)
   };
 
 
