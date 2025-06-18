@@ -89,12 +89,11 @@ function initAliasModal() {
     if (a) {
       saludo.innerHTML = `<span id="typed"></span>`;
       new Typed('#typed', {
-        strings: [`Bienvenido/a ${a}`],
         typeSpeed: 50,       // velocidad de tipeo
         backSpeed: 30,       // velocidad al borrar
         startDelay: 300,     // espera antes de empezar
         backDelay: 1500,     // tiempo antes de borrar
-        loop: true,          // 🔁 repetir infinitamente
+        loop: true,          
         showCursor: false,
         strings: [
           `Bienvenido/a ${a}`,
