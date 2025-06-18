@@ -82,10 +82,32 @@ function initAliasModal() {
 
   const show = ()=>{ modal.classList.remove('hidden'); inp.value=''; err.classList.add('hidden'); inp.focus(); };
   const hide = ()=> modal.classList.add('hidden');
-  const update = ()=> {
+  const update = () => {
     const a = getLocaleStorage('alias');
-    saludo.textContent = a ? `Bienvenido/a ${a}` : 'Bienvenido/a';
+    const saludo = document.querySelector('.saludo');
+
+    if (a) {
+      saludo.innerHTML = `<span id="typed"></span>`;
+      new Typed('#typed', {
+        strings: [`Bienvenido/a ${a}`],
+        typeSpeed: 50,       // velocidad de tipeo
+        backSpeed: 30,       // velocidad al borrar
+        startDelay: 300,     // espera antes de empezar
+        backDelay: 1500,     // tiempo antes de borrar
+        loop: true,          // 🔁 repetir infinitamente
+        showCursor: false,
+        strings: [
+          `Bienvenido/a ${a}`,
+          "Unite a una sala ✨",
+          "¡Divertite con amigos 🎉!",
+          "LeibROOMS Lite 💬"
+        ]
+      });
+    } else {
+      saludo.textContent = 'Bienvenido/a';
+    }
   };
+
 
   getLocaleStorage('alias') ? (hide(), update()) : show();
 
@@ -94,7 +116,9 @@ function initAliasModal() {
     if (!v) { err.classList.remove('hidden'); return; }
     setLocaleStorage('alias', v);
     hide(); update();
+    
   };
+  
 
   btn.addEventListener('click', validar);
   inp.addEventListener('keydown', e=> e.key==='Enter' && validar());

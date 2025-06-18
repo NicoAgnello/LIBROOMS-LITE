@@ -20,13 +20,13 @@
     </header>
     <main class="main-content">
       <div id="particles-js" class="particles-fondo"></div>
-      <h2 class="saludo">Bienvenido/a</h2>
+      <h2 class="saludo"><span id="typed"></span></h2>
       <div class="buttons-container">
-        <button id="unirse-sala-gral">
+        <button class="boton-sala" id="unirse-sala-gral">
           Unirse a Sala General
         </button>
-        <button id="crear-sala">Crear Sala</button>
-        <button id="unirse-sala">Unirse a Sala</button>
+        <button class="boton-sala" id="crear-sala">Crear Sala</button>
+        <button class="boton-sala" id="unirse-sala">Unirse a Sala</button>
       </div>
     </main>
 
@@ -67,7 +67,7 @@
         <input
           type="password"
           id="sala-password"
-          placeholder="Contraseña (si es privada)"
+          placeholder="Contraseña"
           class="hidden"
         />
         <p id="sala-error-nombre" class="error-message hidden">
@@ -104,7 +104,7 @@
         <input
           type="password"
           id="join-password"
-          placeholder="Contraseña (si es privada)"
+          placeholder="Contraseña"
           class="hidden"
         />
         <p id="join-error-nombre" class="error-message hidden">
@@ -121,12 +121,9 @@
     </div>
 
     <!-- Scripts -->
-     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-     <script>
-  particlesJS.load('particles-js', './particlesjs-config.json', function () {
-    console.log('🎉 Particles.js cargado correctamente');
-  });
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>particlesJS.load('particles-js', './particlesjs-config.json');</script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="./main.js"></script>
   </body>

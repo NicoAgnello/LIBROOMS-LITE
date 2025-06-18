@@ -167,6 +167,11 @@ socket.on('disconnect', () => {
   }
 });
 
+// Funcionalidad Escribiendo...
+socket.on('escribiendo', ({room, alias}) =>{
+  socket.to(room).emit('usuarioEscribiendo', {alias});
+})
+
 
 /*
 //DESCONECCION DEL CLIENTE

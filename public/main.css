@@ -3,7 +3,7 @@
   --color-background-dark:    #122050;
   --color-primary:            #184a71;
   --color-accent:             #467e99;
-  --color-accent-light:       #acc4ce;
+  --color-accent-light:       #cde7f1;
   --font-primary: 'Rubik', sans-serif;
 }
 
@@ -26,30 +26,34 @@ body {
 
 /* Header */
 header {
-  background-color: var(--color-accent-light);
+  background: rgba(255, 255, 255, 0.158);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 60px;
+  padding: 1rem;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
+  z-index: 10;
 }
 
-/* Main Content */
+/* Fondo con partículas */
 .particles-fondo {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0; /* por detrás del contenido */
+  z-index: 0;
   pointer-events: none;
 }
 
+/* Contenido principal */
 .main-content {
-  background-color: var(--color-background-dark);
+  background-color: #0F194D;
   flex: 1;
   display: flex;
   flex-direction: column;
-  position: relative; /* clave para que el fondo se posicione relativo a main */
+  position: relative;
   overflow: hidden;
 }
 
@@ -59,46 +63,50 @@ header {
   font-weight: 500;
   text-align: center;
   padding-top: 2rem;
+   min-height: 6rem;
 }
 
 .buttons-container {
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10rem;
+  justify-content: space-evenly;
 }
 
-/* Links & Buttons */
-a, button {
-  padding: 2rem;
-  border-radius: 2rem;
-  background-color: var(--color-accent-light);
-  color: var(--color-background-darkest);
-  font-size: 1rem;
+/* Botones estilo glass */
+.boton-sala {
+  padding: 2rem 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  color: var(--color-accent-light);
+  font-size: 1.1rem;
   font-weight: 500;
-  border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-a:hover, button:hover {
-  background-color: #9bb8c4;
-}
-
-a {
-  text-decoration: none;
+.boton-sala:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.2);
+  box-shadow: 0 0 10px #fff3, 0 0 20px #00ffff44;
 }
 
 /* Footer */
 footer {
-  background-color: var(--color-accent);
+  background: rgba(9, 15, 68, 0.918);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   padding: 1rem;
   text-align: center;
-  color: white;
+  color: var(--color-accent-light);
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
-/* Modal styles (alias & sala) */
+
+/* Modal glass */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -117,12 +125,16 @@ footer {
 }
 
 .modal {
-  background: white;
-  padding: 2rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
+  padding: 2rem;
   width: 90%;
   max-width: 400px;
   text-align: center;
+  color: var(--color-accent-light);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 .modal input {
@@ -136,12 +148,27 @@ footer {
 
 .modal button {
   padding: 0.8rem 2rem;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.5rem;
-  background: var(--color-primary);
-  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  color: var(--color-accent-light);
   font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #fff3, 0 0 15px #00ffff44;
+}
+
+.modal-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .btn-secondary {

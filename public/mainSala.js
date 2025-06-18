@@ -46,8 +46,9 @@ window.addEventListener('DOMContentLoaded', () => {
   const enviarMensaje = () => {
     const inputMensaje = document.getElementById('inputMensaje');
     const mensajeValue = inputMensaje.value.trim();
-
+    
     if (!mensajeValue) return;
+    
 
     // Emitimos el mensaje con info de sala y alias
     socket.emit('mensajeChat', { value: mensajeValue, room, alias });
@@ -93,5 +94,24 @@ window.addEventListener('DOMContentLoaded', () => {
       li.textContent = "  🟢  " + alias;
       listaUsuarios.appendChild(li);
     });
+  });
+
+  // Funcionalidad Escribiendo...
+  const inputMensaje = document.getElementById('inputMensaje');
+  // Emitir "escribiendo" al servidor cuando el usuario empieza a tipear
+  inputMensaje.addEventListener('input', () => {
+    socket.emit('escribiendo', { room, alias });
+  });
+
+  const escribiendoDiv = document.getElementById('escribiendo');
+
+  socket.on('usuarioEscribiendo', (data) => {
+    if (data.alias !== alias) {
+      escribiendoDiv.textContent = `✏️ ${data.alias} está escribiendo...`;
+      clearTimeout(window._escribiendoTimer);
+      window._escribiendoTimer = setTimeout(() => {
+        escribiendoDiv.textContent = '';
+      }, 2000);
+    }
   });
 });
