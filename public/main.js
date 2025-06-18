@@ -36,7 +36,7 @@ socket.on('unidoSala', (respuesta) => {
     errN.classList.add('hidden');
     errP.classList.add('hidden');
 
-    if (respuesta.error.includes('contraseña')) {
+    if (respuesta.error.includes('contrasena')) {
       errP.textContent = respuesta.error;
       errP.classList.remove('hidden');
     } else {
@@ -164,13 +164,15 @@ function initJoinModal() {
   });
 
   const unir = ()=> {
+    debugger
     let ok = true;
     if (!nombre.value.trim()) { errN.classList.remove('hidden'); ok = false; }
     else errN.classList.add('hidden');
     const tipo = radios.find(r => r.checked).value;
+
     if (tipo === 'privada' && !pass.value.trim()) {
-      errP.classList.remove('hidden'); ok = false;
-    } else errP.classList.add('hidden');
+        errP.classList.remove('hidden'); ok = false;
+      } else errP.classList.add('hidden');
     if (!ok) return;
 
     const sala = {
@@ -185,7 +187,7 @@ function initJoinModal() {
     socket.emit('unirseSala', sala); // solo esto
     localStorage.setItem('salaActual', sala.nombreSala)
     console.log(sala)
-    window.location.href="salaGeneral.html"
+    window.location.href="salaGenera-l.html"
   };
 
 
@@ -217,6 +219,5 @@ window.addEventListener('load', () => {
         alias: getLocaleStorage('alias') || 'Anónimo'
       });
       localStorage.setItem('salaActual', 'general');
-      window.location.href = 'salaGeneral.html';
     });
 });

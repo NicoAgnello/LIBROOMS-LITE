@@ -117,7 +117,9 @@ socket.on('unirseSala', (sala) => {
       console.log(`test: ......}`)
       console.log(sala)
       console.log(salaCreada)
-
+      console.log(sala.contrasena)
+      console.log(salaCreada.contrasena)
+      console.log('hola')
       if (sala.contrasena === salaCreada.contrasena) {
         socket.join(nombreSala);
         registrarUsuarioEnSala(socket, nombreSala, sala.alias);
