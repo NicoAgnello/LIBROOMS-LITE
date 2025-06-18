@@ -119,12 +119,11 @@ socket.on('unirseSala', (sala) => {
       console.log(salaCreada)
       console.log(sala.contrasena)
       console.log(salaCreada.contrasena)
-      console.log('hola')
       if (sala.contrasena === salaCreada.contrasena) {
         socket.join(nombreSala);
         registrarUsuarioEnSala(socket, nombreSala, sala.alias);
 
-        socket.emit('unidoSala', { exito: true, sala: nombreSala });
+        socket.emit('unidoSala', { exito: true, sala: salaCreada  });
         console.log(`${sala.alias} se unió a la sala: ${nombreSala}`);
 
       } else {
@@ -136,7 +135,7 @@ socket.on('unirseSala', (sala) => {
     else { //sala publica
 
             socket.join(nombreSala);
-      socket.emit('unidoSala', { exito: true, sala: nombreSala });
+      socket.emit('unidoSala', { exito: true, sala: salaCreada  });
       console.log(`${sala.alias} se unió a la sala: ${nombreSala}`);
       registrarUsuarioEnSala(socket, nombreSala, sala.alias);
 

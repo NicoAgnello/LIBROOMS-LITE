@@ -1,72 +1,65 @@
 // mainSala.js
 
 window.addEventListener('DOMContentLoaded', () => {
-  // Conexión Socket.IO
+  // 📡 Establecer conexión con el servidor vía Socket.IO
   const socket = io();
 
-  // Helpers LocalStorage
+  // 🧰 Helper para obtener valores del localStorage
   const getLocaleStorage = key => localStorage.getItem(key);
 
 
-
-
-  // 1. Recuperar nombre de sala guardado
+  // 📝 Obtener el nombre de la sala actual desde localStorage
   const room = localStorage.getItem('salaActual') || 'general';
-  const alias = localStorage.getItem('alias')
-  // 2. Mostrar nombre de sala en el encabezado
+
+  // Obtener el alias guardado del usuario
+  const alias = localStorage.getItem('alias');
+
+  // 🖼️ Mostrar el nombre de la sala en el encabezado de la página
   const roomNameEl = document.getElementById('room-name');
   if (roomNameEl) {
     roomNameEl.textContent = `Sala: ${room}`;
   }
 
-  
-  // 3. Unirse al room en el servidor (re-emisión para el nuevo socket)
-/*
-  const alias = getLocaleStorage('alias') || 'Anónimo';
-  socket.emit('unirseSala', {
-    nombreSala: room,
-    privada: false,
-    contrasena: '', 
-    alias
-  });
-*/
+  // 🔁 Intentar unirse a la sala automáticamente al cargar la página
 
-// 1. ¿Vengo de crear una sala privada?
-let salaPayload = null;
-const raw = sessionStorage.getItem('salaJoinData');
-if (raw) {
-  salaPayload = JSON.parse(raw);
-   // ya no lo necesitamos
-  sessionStorage.removeItem('salaJoinData');
-} else {
-   // join “normal” (pública o general)
-  salaPayload = {
-    nombreSala: localStorage.getItem('salaActual') || 'General',
-    privada: false,
-    contrasena: '',
-    alias: alias
-  };
-}
- // Mostrar nombre de sala en el header
-document.getElementById('room-name').textContent = `Sala: ${salaPayload.nombreSala}`;
- // 2. Emitir la solicitud de unión correcta
-socket.emit('unirseSala', salaPayload);
+  // ✅ Paso 1: Ver si hay datos de sesión almacenados de una sala reciente
+  let salaPayload = null;
+  const raw = sessionStorage.getItem('salaJoinData');
+  if (raw) {
+    // Si existen, los parseamos y los usamos para emitir el unirseSala
+    salaPayload = JSON.parse(raw);
+    sessionStorage.removeItem('salaJoinData');
+    socket.emit('unirseSala', salaPayload);
+  } else {
+    // Si no hay datos, no enviamos nada para evitar errores
+    console.warn('⚠️ No se encontró salaJoinData. No se enviará unirseSala.');
+    return;
+  }
+
+  // Mostrar nombre de la sala en el encabezado (seguro)
+  document.getElementById('room-name').textContent = `Sala: ${salaPayload.nombreSala}`;
+
+  // (Ya hicimos emit más arriba, no se repite)
 
 
-
-  // 4. Enviar mensaje
+  // 💬 Función para enviar mensaje al chat
   const enviarMensaje = () => {
     const inputMensaje = document.getElementById('inputMensaje');
     const mensajeValue = inputMensaje.value.trim();
+
     if (!mensajeValue) return;
-    socket.emit('mensajeChat', { value: mensajeValue, room , alias});
+
+    // Emitimos el mensaje con info de sala y alias
+    socket.emit('mensajeChat', { value: mensajeValue, room, alias });
     inputMensaje.value = '';
   };
 
+  // 📤 Enviar mensaje al hacer clic en el botón
   document
     .getElementById('botonEnviarMensaje')
     .addEventListener('click', enviarMensaje);
 
+  // ⌨️ Enviar mensaje con Enter en el input
   document
     .getElementById('inputMensaje')
     .addEventListener('keydown', e => {
@@ -76,7 +69,7 @@ socket.emit('unirseSala', salaPayload);
       }
     });
 
-  // 5. Recibir y mostrar mensajes
+  // 📥 Recibir y mostrar mensajes del servidor
   const chatLog = document.getElementById('chat-log');
   socket.on('mensajeChat', mensaje => {
     const li = document.createElement('li');
@@ -90,11 +83,11 @@ socket.emit('unirseSala', salaPayload);
     chatLog.scrollTop = chatLog.scrollHeight;
   });
 
-    // 6. Recibir y renderizar usuarios conectados
+  // 👥 Recibir y renderizar lista de usuarios conectados en la sala
   const listaUsuarios = document.querySelector('.lista-usuarios');
 
   socket.on('actualizarUsuarios', (usuarios) => {
-    listaUsuarios.innerHTML = ''; // Limpiar lista
+    listaUsuarios.innerHTML = ''; // Limpiar la lista
     usuarios.forEach(alias => {
       const li = document.createElement('li');
       li.textContent = "  🟢  " + alias;
